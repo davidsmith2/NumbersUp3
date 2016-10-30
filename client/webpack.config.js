@@ -4,6 +4,7 @@ module.exports = {
 	entry: [
 		'webpack-dev-server/client?http://localhost:8080',
 		'webpack/hot/only-dev-server',
+		'babel-polyfill',
 		'./src/index.jsx'
 	],
 	module: {
@@ -31,5 +32,10 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin()
 	],
-	devtool: 'source-map'
+	devtool: 'source-map',
+    externals: [
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true
+    ]
 };

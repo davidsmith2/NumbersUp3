@@ -1,13 +1,15 @@
+import 'babel-polyfill';
+
 const MAX_TILES = 25;
 const LOW_GUESS_DESCRIPTOR = 'Low';
 const HIGH_GUESS_DESCRIPTOR = 'High';
 const CORRECT_GUESS_DESCRIPTOR = 'Match';
 
 function getGuessAccuracy(number, answer) {
-	var str;
 	if (number < answer) {
 		return LOW_GUESS_DESCRIPTOR;
-	} else if (number > answer) {
+	}
+	if (number > answer) {
 		return HIGH_GUESS_DESCRIPTOR;
 	}
 	return CORRECT_GUESS_DESCRIPTOR;
