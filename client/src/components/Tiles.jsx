@@ -22,7 +22,7 @@ export class Tiles extends React.Component {
 
 	render() {
 		return <div className="tiles">
-			{this.props.data.tiles.map(this.renderTile)}
+			{this.props.data.tiles.map(this.renderTile.bind(this))}
 		</div>;
 	}
 

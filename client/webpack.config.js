@@ -12,7 +12,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loaders: ["babel-loader"]
+				loaders: ["babel"]
 			}
 		]
 	},
@@ -33,9 +33,9 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin()
 	],
 	devtool: 'source-map',
-    externals: [
+    externals: {
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
-    ]
+    }
 };

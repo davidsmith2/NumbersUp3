@@ -24,10 +24,9 @@ export function getTiles() {
 }
 
 export function handleGuess(state, number) {
-	let guessesMade = state.guessesMade;
 	return {
 		currentGuess: number,
 		guessAccuracy: getGuessAccuracy(number, state.secretNumber),
-		guessesMade: guessesMade + 1
+		guessesMade: state.guessesMade + 1
 	};
 }
