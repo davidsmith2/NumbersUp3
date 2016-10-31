@@ -10,7 +10,8 @@ const INITIAL_STATE = {
 	currentGuess: '-',
 	guessAccuracy: '-',
 	guessesAllowed: 13,
-	guessesMade: 0
+	guessesMade: 0,
+	guesses: []
 };
 
 export function reducer(state = INITIAL_STATE, action) {

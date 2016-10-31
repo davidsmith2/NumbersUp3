@@ -5,7 +5,7 @@ import {Tiles} from './Tiles';
 
 export class Game extends React.Component {
 	render() {
-		return <div>
+		return <div className="game">
 			<Scoreboard ref="scoreboard" data={this.props.data} />
 			<Tiles ref="tiles" data={this.props.data} />
 		</div>;

@@ -21,6 +21,10 @@ export class Scoreboard extends React.Component {
 		return this.getGuessesAllowed() - this.getGuessesMade();
 	}
 
+	getResult() {
+		return this.props.data.result || '-';
+	}
+
 	render() {
 		return <div className="scoreboard">
 			<div className="currentGuess scoreboardSection">
@@ -61,6 +65,14 @@ export class Scoreboard extends React.Component {
 				</div>
 				<div className="scoreboardSectionBody">
 					{this.getGuessesRemaining()}
+				</div>
+			</div>
+			<div className="result scoreboardSection">
+				<div className="scoreboardSectionHeader">
+					Result
+				</div>
+				<div className="scoreboardSectionBody">
+					{this.getResult()}
 				</div>
 			</div>
 		</div>;

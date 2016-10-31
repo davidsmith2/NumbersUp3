@@ -21,9 +21,29 @@ describe('Game', () => {
 				}
 			}
 		};
-		const state = {tiles: [1,2,3]};
+		const state = {
+			tiles: [1,2,3],
+			guesses: []
+		};
 		const component = mount(<Tiles data={state} />, mountOptions);
 		expect(component.find('.tile').length).to.equal(3);
+	});
+
+	it('handles numbers that have been guessed', () => {
+		const mountOptions = {
+			context: {
+				store: {
+					dispatch() {}
+				}
+			}
+		};
+		const state = {
+			tiles: [1,2,3],
+			secretNumber: 2,
+			guesses: [{number: 1}]
+		};
+		const component = mount(<Tiles data={state} />, mountOptions);
+		expect(component.find('.tileSpan').length).to.equal(1);
 	});
 
 });

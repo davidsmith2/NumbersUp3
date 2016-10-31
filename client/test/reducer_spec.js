@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import 'babel-polyfill';
 
 import {reducer} from '../src/reducer';
 
@@ -8,7 +9,8 @@ describe('reducer', () => {
 
         it('sets current guess', () => {
             const state = {
-                currentGuess: '-'
+                currentGuess: '-',
+                guesses: []
             };
             const action = {
                 type: 'GUESS',
@@ -20,7 +22,8 @@ describe('reducer', () => {
 
         it('increments guesses made', () => {
             const state = {
-                guessesMade: 0
+                guessesMade: 0,
+                guesses: []
             };
             const action = {
                 type: 'GUESS',
@@ -30,11 +33,71 @@ describe('reducer', () => {
             expect(nextState.guessesMade).to.equal(1);
         });
 
+        it('records the guess', () => {
+            const state = {
+                guesses: []
+            };
+            const action = {
+                type: 'GUESS',
+                number: 2
+            };
+            const nextState = reducer(state, action);
+            expect(!!nextState.guesses.find((obj) => obj.number === 2)).to.equal(true);
+        });
+
+        describe('result', () => {
+
+            it('tells the user when the game has been won', () => {
+                const state = {
+                    secretNumber: 1,
+                    guesses: []
+                };
+                const action = {
+                    type: 'GUESS',
+                    number: 1
+                };
+                const nextState = reducer(state, action);
+                expect(nextState.result).to.equal('Win');
+            });
+
+            it('tells the user when the game has been lost', () => {
+                const state = {
+                    secretNumber: 1,
+                    guesses: [],
+                    guessesAllowed: 1,
+                    guessesMade: 0
+                };
+                const action = {
+                    type: 'GUESS',
+                    number: 2
+                };
+                const nextState = reducer(state, action);
+                expect(nextState.result).to.equal('Lose');
+            });
+
+            it('tells the user when the game is in progress', () => {
+                const state = {
+                    secretNumber: 1,
+                    guesses: [],
+                    guessesAllowed: 2,
+                    guessesMade: 0
+                };
+                const action = {
+                    type: 'GUESS',
+                    number: 2
+                };
+                const nextState = reducer(state, action);
+                expect(nextState.result).to.equal(false);
+            });
+
+        });
+
         describe('guess accuracy', () => {
 
             it('handles high guesses', () => {
                 const state = {
-                    secretNumber: 1
+                    secretNumber: 1,
+                    guesses: []
                 };
                 const action = {
                     type: 'GUESS',
@@ -46,7 +109,8 @@ describe('reducer', () => {
 
             it('handles low guesses', () => {
                 const state = {
-                    secretNumber: 2
+                    secretNumber: 2,
+                    guesses: []
                 };
                 const action = {
                     type: 'GUESS',
@@ -58,7 +122,8 @@ describe('reducer', () => {
 
             it('handles correct guesses', () => {
                 const state = {
-                    secretNumber: 2
+                    secretNumber: 2,
+                    guesses: []
                 };
                 const action = {
                     type: 'GUESS',

@@ -10,7 +10,9 @@ function mapStateToProps(state) {
 		currentGuess: state.currentGuess,
 		guessAccuracy: state.guessAccuracy,
 		guessesMade: state.guessesMade,
-		guessesRemaining: state.guessesRemaining
+		guessesRemaining: state.guessesRemaining,
+		guesses: state.guesses,
+		result: state.result
 	};
 }
 
