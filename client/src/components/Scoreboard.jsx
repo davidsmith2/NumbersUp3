@@ -1,81 +1,62 @@
 import React from 'react';
 
 export class Scoreboard extends React.Component {
-	getCurrentGuess() {
-		return this.props.data.currentGuess;
-	}
-
-	getGuessAccuracy() {
-		return this.props.data.guessAccuracy;
-	}
-
-	getGuessesAllowed() {
-		return this.props.data.guessesAllowed;
-	}
-
-	getGuessesMade() {
-		return this.props.data.guessesMade;
-	}
-
-	getGuessesRemaining() {
-		return this.getGuessesAllowed() - this.getGuessesMade();
-	}
-
-	getResult() {
-		return this.props.data.result || '-';
+	renderSection(key, headerValue, bodyValue) {
+		return <div key={key} className="scoreboardSection">
+			<div className="scoreboardSectionHeader">
+				{headerValue}
+			</div>
+			<div className="scoreboardSectionBody">
+				{bodyValue}
+			</div>
+		</div>;
 	}
 
 	render() {
-		return <div className="scoreboard">
-			<div className="currentGuess scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Current
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getCurrentGuess()}
-				</div>
-			</div>
-			<div className="guessAccuracy scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Accuracy
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getGuessAccuracy()}
-				</div>
-			</div>
-			<div className="guessesAllowed scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Allowed
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getGuessesAllowed()}
-				</div>
-			</div>
-			<div className="guessesMade scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Made
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getGuessesMade()}
-				</div>
-			</div>
-			<div className="guessesRemaining scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Remaining
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getGuessesRemaining()}
-				</div>
-			</div>
-			<div className="result scoreboardSection">
-				<div className="scoreboardSectionHeader">
-					Result
-				</div>
-				<div className="scoreboardSectionBody">
-					{this.getResult()}
-				</div>
-			</div>
-		</div>;
+		let sections = [];
+		sections.push(
+			this.renderSection(
+				'currentGuess', 
+				'Current', 
+				this.props.data.currentGuess
+			)
+		);
+		sections.push(
+			this.renderSection(
+				'guessAccuracy', 
+				'Accuracy', 
+				this.props.data.guessAccuracy
+			)
+		);
+		sections.push(
+			this.renderSection(
+				'guessesAllowed', 
+				'Allowed', 
+				this.props.data.guessesAllowed
+			)
+		);
+		sections.push(
+			this.renderSection(
+				'guessesMade', 
+				'Made', 
+				this.props.data.guessesMade
+			)
+		);
+		sections.push(
+			this.renderSection(
+				'guessesRemaining', 
+				'Remaining', 
+				this.props.data.guessesAllowed - this.props.data.guessesMade
+			)
+		);
+		sections.push(
+			this.renderSection(
+				'result', 
+				'Result', 
+				this.props.data.result || '-'
+			)
+		);
+		return <div className="scoreboard">{sections}</div>;
 	}
 
 }
