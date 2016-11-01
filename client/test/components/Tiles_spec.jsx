@@ -11,7 +11,7 @@ import {mount} from 'enzyme';
 
 import {Tiles} from '../../src/components/Tiles';
 
-describe('Game', () => {
+describe('Tiles', () => {
 
 	it('renders tiles', () => {
 		const mountOptions = {
