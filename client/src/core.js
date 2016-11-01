@@ -39,25 +39,49 @@ function getResult(guessAccuracy, guessesMade) {
 	return false;
 }
 
+export function getTiles(tile, guessAccuracy) {
+	let thisTile;
+	if (tile && guessAccuracy) {
+		thisTile = this.tiles.find((obj) => obj.number === tile.number);
+		thisTile.guessAccuracy = guessAccuracy;
+		return this.tiles;
+	} else {
+		return Array.from(Array(MAX_TILES)).map((e,i) => {
+			return {number: i + 1, guessAccuracy: false};
+		});
+	}
+}
+
 export function getSecretNumber() {
 	return Math.floor(Math.random() * (MAX_TILES - 1 + 1) + 1);
 }
 
-export function getTiles() {
-	return Array.from(Array(MAX_TILES)).map((e,i) => i + 1);
-}
-
-export function handleGuess(state, number) {
-	const guessAccuracy = getGuessAccuracy.call(state, number);
+export function handleGuess(state, tile) {
+	const guessAccuracy = getGuessAccuracy.call(state, tile.number);
 	const guessesMade = getGuessesMade.call(state);
-	const guesses = getGuesses.call(state, number, guessAccuracy);
+	const guesses = getGuesses.call(state, tile.number, guessAccuracy);
 	const result = getResult.call(state, guessAccuracy, guessesMade);
+	const tiles = getTiles.call(state, tile, guessAccuracy);
 	let nextState = {
-		currentGuess: number,
+		currentGuess: tile.number,
 		guessAccuracy: guessAccuracy,
 		guessesMade: guessesMade,
 		guesses: guesses,
-		result: result
+		result: result,
+		tiles: tiles
 	};
 	return nextState;
+}
+
+export function setInitialState() {
+	return 	{
+		secretNumber: getSecretNumber(),
+		tiles: getTiles(),
+		currentGuess: null,
+		guessAccuracy: null,
+		guessesAllowed: 13,
+		guessesMade: 0,
+		result: null,
+		guesses: []
+	};
 }

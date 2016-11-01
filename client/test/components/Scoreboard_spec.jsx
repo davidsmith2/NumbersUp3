@@ -13,13 +13,10 @@ import {Scoreboard} from '../../src/components/Scoreboard';
 
 describe('Scoreboard', () => {
 
-	it('renders', () => {
+	it('renders the scoreboard sections', () => {
 		const state = {
-			currentGuess: 1,
-			guessAccuracy: 'Low',
 			guessesAllowed: 13,
-			guessesMade: 1,
-			result: false
+			guessesMade: 1
 		};
 		const component = renderIntoDocument(<Scoreboard data={state} />);
 		const sections = scryRenderedDOMComponentsWithClass(component, 'scoreboardSection');

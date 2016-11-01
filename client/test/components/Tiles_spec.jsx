@@ -13,7 +13,7 @@ import {Tiles} from '../../src/components/Tiles';
 
 describe('Tiles', () => {
 
-	it('renders tiles', () => {
+	it('renders numbers', () => {
 		const mountOptions = {
 			context: {
 				store: {
@@ -22,14 +22,14 @@ describe('Tiles', () => {
 			}
 		};
 		const state = {
-			tiles: [1,2,3],
+			tiles: [{number: 1}, {number: 2}, {number: 3}],
 			guesses: []
 		};
 		const component = mount(<Tiles data={state} />, mountOptions);
 		expect(component.find('.tile').length).to.equal(3);
 	});
 
-	it('handles numbers that have been guessed', () => {
+	it('renders numbers that have already been guessed', () => {
 		const mountOptions = {
 			context: {
 				store: {
@@ -38,7 +38,7 @@ describe('Tiles', () => {
 			}
 		};
 		const state = {
-			tiles: [1,2,3],
+			tiles: [{number: 1, guessAccuracy: 'Low'}, {number: 2}, {number: 3}],
 			secretNumber: 2,
 			guesses: [{number: 1}]
 		};

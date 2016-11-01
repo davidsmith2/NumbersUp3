@@ -6,36 +6,30 @@ export class Tiles extends React.Component {
     };
 
 	render() {
-		return <div className="tiles">
-			{this.props.data.tiles.map(this.renderNumber.bind(this))}
-		</div>;
+		return (<div className="tiles">
+			{this.props.data.tiles.map(this.renderTile.bind(this))}
+		</div>);
 	}
 
-	renderNumber(number) {
-		const func = (this.numberHasBeenGuessed(number)) ? this.renderGuessedNumber : this.renderUnguessedNumber;
-		return <div key={number} className="tile">{func.call(this, number)}</div>;
+	renderTile(tile) {
+		const func = (tile.guessAccuracy) ? this.renderGuessedTile : this.renderUnguessedTile;
+		return (<div key={tile.number} className="tile">{func.call(this, tile)}</div>);
 	}
 
-	renderGuessedNumber(number) {
-		return <span className="tileSpan" ref="guess">
-			{number} - {this.numberHasBeenGuessed(number).guessAccuracy}
-		</span>;
+	renderGuessedTile(tile) {
+		return (<span className="tileSpan" ref="guess">{tile.number} - {tile.guessAccuracy}</span>);
 	}
 
-	renderUnguessedNumber(number) {
-		return <a className="tileLink" href="#" ref="guess" onClick={() => this.guess(number)}>
-			{number}
-		</a>;
+	renderUnguessedTile(tile) {
+		return (<a className="tileLink" href="#" ref="guess" onClick={() => this.guess(tile)}>
+			{tile.number}
+		</a>);
 	}
 
-	numberHasBeenGuessed(number) {
-		return this.props.data.guesses.find((obj) => obj.number === number);
-	}
-
-	guess(number) {
+	guess(tile) {
 		this.context.store.dispatch({
 			type: 'GUESS',
-			number: number
+			tile: tile
 		});
 	}
 

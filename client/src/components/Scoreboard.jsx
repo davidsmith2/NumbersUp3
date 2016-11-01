@@ -18,14 +18,14 @@ export class Scoreboard extends React.Component {
 			this.renderSection(
 				'currentGuess', 
 				'Current', 
-				this.props.data.currentGuess
+				this.props.data.currentGuess || '-'
 			)
 		);
 		sections.push(
 			this.renderSection(
 				'guessAccuracy', 
 				'Accuracy', 
-				this.props.data.guessAccuracy
+				this.props.data.guessAccuracy || '-'
 			)
 		);
 		sections.push(
