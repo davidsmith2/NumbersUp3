@@ -11,15 +11,22 @@ import {mount} from 'enzyme';
 import {Result} from '../../src/components/Result';
 
 describe('Result', () => {
+	const mountOptions = {
+		context: {
+			store: {
+				dispatch() {}
+			}
+		}
+	};
 
 	it('tells the user if they\'ve won', () => {
 		const state = {
 			result: 'Win',
 			secretNumber: 1
 		};
-		const component = renderIntoDocument(<Result data={state} />);
-		const headings = scryRenderedDOMComponentsWithTag(component, 'h1');
-		expect(headings[0].textContent).to.equal('You Win');
+		const component = mount(<Result data={state} />, mountOptions);
+		expect(component.find('h1')).to.have.length(1);
+		expect(component.find('h1').text()).to.equal('You Win');
 	});
 
 	it('tells the user if they\'ve lost', () => {
@@ -27,18 +34,17 @@ describe('Result', () => {
 			result: 'Lose',
 			secretNumber: 1
 		};
-		const component = renderIntoDocument(<Result data={state} />);
-		const els = scryRenderedDOMComponentsWithTag(component, 'h1');
-		expect(els[0].textContent).to.equal('You Lose');
+		const component = mount(<Result data={state} />, mountOptions);
+		expect(component.find('h1').text()).to.equal('You Lose');
 	});
 
 	it('tells the user the secret number', () => {
 		const state = {
 			secretNumber: 1
 		};
-		const component = renderIntoDocument(<Result data={state} />);
-		const els = scryRenderedDOMComponentsWithTag(component, 'p');
-		expect(els[0].textContent).to.equal('The secret number was 1.');
+		const component = mount(<Result data={state} />, mountOptions);
+		expect(component.find('p')).to.have.length(1);
+		expect(component.find('p').text()).to.equal('The secret number was 1.');
 	});
 
 });
