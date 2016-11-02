@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {
 	renderIntoDocument,
-	scryRenderedDOMComponentsWithClass,
-	Simulate
+	scryRenderedDOMComponentsWithClass
 } from 'react-addons-test-utils';
 import {expect} from 'chai';
-import {List} from 'immutable';
-import {mount} from 'enzyme';
 
 import {Scoreboard} from '../../src/components/Scoreboard';
 

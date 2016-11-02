@@ -1,7 +1,6 @@
 import React from 'react';
-import {GridList, GridTile} from 'material-ui/GridList';
-import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {GridList, GridTile} from 'material-ui/GridList';
 
 const styles = {
   gridListRoot: {
@@ -12,7 +11,7 @@ const styles = {
   gridList: {
     width: '100%',
     height: '100%',
-    overflowY: 'auto'
+    overflowY: 'hidden'
   },
   gridTile: {
     backgroundColor: '#eee',
