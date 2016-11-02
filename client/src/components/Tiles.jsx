@@ -1,4 +1,33 @@
 import React from 'react';
+import {GridList, GridTile} from 'material-ui/GridList';
+import FlatButton from 'material-ui/FlatButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+const styles = {
+  gridListRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around'
+  },
+  gridList: {
+    width: '100%',
+    height: '100%',
+    overflowY: 'auto'
+  },
+  gridTile: {
+    backgroundColor: '#eee',
+    border: '1px solid #ddd'
+  },
+  gridTileContent: {
+    position: 'relative',
+	top: '50%',
+	transform: 'translateY(-50%)',
+  	textAlign: 'center'
+  },
+  gridTileContentFontSize: {
+  	fontSize: '48px'
+  }
+};
 
 export class Tiles extends React.Component {
     static contextTypes = {
@@ -6,24 +35,43 @@ export class Tiles extends React.Component {
     };
 
 	render() {
-		return (<div className="tiles">
-			{this.props.data.tiles.map(this.renderTile.bind(this))}
-		</div>);
+		return (
+			<MuiThemeProvider>
+				<div className="gridListRoot" style={styles.gridListRoot}>
+					<GridList cellHeight={100} cols={10} padding={0} style={styles.gridList}>
+						{this.props.data.tiles.map(this.renderTile.bind(this))}
+					</GridList>
+				</div>
+			</MuiThemeProvider>
+		);
 	}
 
 	renderTile(tile) {
-		const func = (tile.guessAccuracy) ? this.renderGuessedTile : this.renderUnguessedTile;
-		return (<div key={tile.number} className="tile">{func.call(this, tile)}</div>);
-	}
-
-	renderGuessedTile(tile) {
-		return (<span className="tileSpan" ref="guess">{tile.number} - {tile.guessAccuracy}</span>);
+		const renderTileContent = (!tile.guessAccuracy) ? this.renderUnguessedTile : this.renderGuessedTile;
+		return (
+			<GridTile
+				key={tile.number} 
+				title={(tile.guessAccuracy) ? tile.number : null}
+				subtitle={(tile.guessAccuracy) ? tile.guessAccuracy : null}
+				style={styles.gridTile}>
+				<div className="gridTileContent" style={styles.gridTileContent}>
+					{renderTileContent.call(this, tile)}
+				</div>
+			</GridTile>
+		);
 	}
 
 	renderUnguessedTile(tile) {
-		return (<a className="tileLink" href="#" ref="guess" onClick={() => this.guess(tile)}>
+		return (<a className="gridTileContentLink" href="#" onClick={() => this.guess(tile)} ref="guess" style={styles.gridTileContentFontSize}>
 			{tile.number}
 		</a>);
+	}
+
+	renderGuessedTile(tile) {
+		return (<i className="gridTileContentVisited material-icons" style={styles.gridTileContentFontSize}>
+			{(tile.guessAccuracy === 'Match') ? 'check_circle' : 'error'}
+		</i>)
+
 	}
 
 	guess(tile) {

@@ -13,23 +13,7 @@ import {Tiles} from '../../src/components/Tiles';
 
 describe('Tiles', () => {
 
-	it('renders numbers', () => {
-		const mountOptions = {
-			context: {
-				store: {
-					dispatch() {}
-				}
-			}
-		};
-		const state = {
-			tiles: [{number: 1}, {number: 2}, {number: 3}],
-			guesses: []
-		};
-		const component = mount(<Tiles data={state} />, mountOptions);
-		expect(component.find('.tile').length).to.equal(3);
-	});
-
-	it('renders numbers that have already been guessed', () => {
+	it('renders guessed and unguessed numbers', () => {
 		const mountOptions = {
 			context: {
 				store: {
@@ -43,7 +27,8 @@ describe('Tiles', () => {
 			guesses: [{number: 1}]
 		};
 		const component = mount(<Tiles data={state} />, mountOptions);
-		expect(component.find('.tileSpan').length).to.equal(1);
+		expect(component.find('.gridTileContentLink').length).to.equal(2);
+		expect(component.find('.gridTileContentVisited').length).to.equal(1);
 	});
 
 });
