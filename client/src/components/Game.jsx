@@ -7,6 +7,8 @@ import {Tiles} from './Tiles';
 
 const styles = {
 	container: {
+		width: '960px',
+		margin: '0 auto'
 	},
 	paper: {
 		margin: '0 auto',

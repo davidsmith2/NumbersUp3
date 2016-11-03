@@ -2,6 +2,8 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {GridList, GridTile} from 'material-ui/GridList';
 
+import {getGuessAccuracyIconName} from '../common';
+
 const styles = {
   gridListRoot: {
     display: 'flex',
@@ -52,8 +54,6 @@ export class Tiles extends React.Component {
 		return (
 			<GridTile
 				key={tile.number} 
-				title={(tile.guessAccuracy) ? tile.number : null}
-				subtitle={(tile.guessAccuracy) ? tile.guessAccuracy : null}
 				style={styles.gridTile}>
 				<div className="gridTileContent" style={styles.gridTileContent}>
 					{renderTileContent.call(this, tile)}
@@ -70,9 +70,8 @@ export class Tiles extends React.Component {
 
 	renderGuessedTile(tile) {
 		return (<i className="gridTileContentVisited material-icons" style={styles.gridTileContentFontSize}>
-			{(tile.guessAccuracy === 'Match') ? 'check_circle' : 'error'}
-		</i>)
-
+			{getGuessAccuracyIconName(tile.guessAccuracy)}
+		</i>);
 	}
 
 	guess(tile) {

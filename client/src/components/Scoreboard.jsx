@@ -1,26 +1,28 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Badge from 'material-ui/Badge';
+import {wrap} from 'lodash';
+
+import {getGuessAccuracyIconName} from '../common';
+
+const getGuessAccuracyBadgeContent = (func, state) => {
+	if (!state.guessAccuracy) {
+		return '-';
+	}
+	return (<i className="material-icons">{func(state.guessAccuracy)}</i>);
+};
 
 export class Scoreboard extends React.Component {
 	badges = [
 		{
 			rootContent: 'Current',
-			badgeContent: 'currentGuess'
+			badgeContent: function(state) {
+				return state.currentGuess || '-';
+			}
 		},
 		{
 			rootContent: 'Accuracy',
-			badgeContent: 'guessAccuracy',
-			badgeColor: function(state) {
-				switch(state.guessAccuracy) {
-					case 'Low':
-						return 'blue';
-					case 'High':
-						return 'red';
-					case 'Match':
-						return 'green';
-				}
-			}
+			badgeContent: wrap(getGuessAccuracyIconName, getGuessAccuracyBadgeContent)
 		},
 		{
 			rootContent: 'Allowed',
@@ -28,10 +30,7 @@ export class Scoreboard extends React.Component {
 		},
 		{
 			rootContent: 'Made',
-			badgeContent: 'guessesMade',
-			badgeContent: function(state) {
-				return state.guessesMade;
-			}
+			badgeContent: 'guessesMade'
 		},
 		{
 			rootContent: 'Remaining',
@@ -64,9 +63,6 @@ export class Scoreboard extends React.Component {
 				top: '1em'
 			}
 		};
-		if (config.badgeColor && !!this.props.data.guessesMade) {
-			styles.badge.color = this.getBadgeColor(config.badgeColor);
-		}
 		return (
 			<Badge badgeContent={this.getBadgeContent(config.badgeContent)} badgeStyle={styles.badge} className="scoreboardSection" key={config.rootContent} primary={true} style={styles.root}>
 				{config.rootContent}
@@ -76,18 +72,12 @@ export class Scoreboard extends React.Component {
 
 	getBadgeContent(config) {
 		if (typeof config === 'string') {
-			return this.props.data[config] || '-';
+			return this.props.data[config];
 		}
 		if (typeof config === 'function') {
 			return config(this.props.data);
 		}
 
-	}
-
-	getBadgeColor(config) {
-		if (typeof config === 'function') {
-			return config(this.props.data);
-		}
 	}
 
 }
