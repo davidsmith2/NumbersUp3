@@ -24,7 +24,7 @@ const styles = {
   	textAlign: 'center'
   },
   gridTileContentFontSize: {
-  	fontSize: '48px'
+  	fontSize: '34px'
   }
 };
 
@@ -36,10 +36,12 @@ export class Tiles extends React.Component {
 	render() {
 		return (
 			<MuiThemeProvider>
-				<div className="gridListRoot" style={styles.gridListRoot}>
-					<GridList cellHeight={100} cols={10} padding={0} style={styles.gridList}>
-						{this.props.data.tiles.map(this.renderTile.bind(this))}
-					</GridList>
+				<div style={{float: 'left', width: '680px', marginRight: '20px'}}>
+					<div className="gridListRoot" style={styles.gridListRoot}>
+						<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
+							{this.props.data.tiles.map(this.renderTile.bind(this))}
+						</GridList>
+					</div>
 				</div>
 			</MuiThemeProvider>
 		);

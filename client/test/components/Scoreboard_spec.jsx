@@ -17,7 +17,7 @@ describe('Scoreboard', () => {
 		};
 		const component = renderIntoDocument(<Scoreboard data={state} />);
 		const sections = scryRenderedDOMComponentsWithClass(component, 'scoreboardSection');
-		expect(sections.length).to.equal(6);
+		expect(sections.length).to.equal(5);
 	});
 
 });
