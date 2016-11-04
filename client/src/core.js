@@ -1,8 +1,8 @@
 import {extend} from 'lodash';
 import 'babel-polyfill';
 
-const MAX_TILES = 25;
-const GUESSES_ALLOWED = 13;
+const MAX_TILES = 100;
+const GUESSES_ALLOWED = 7;
 
 const CORRECT_GUESS_DESCRIPTOR = 'Match';
 const HIGH_GUESS_DESCRIPTOR = 'High';

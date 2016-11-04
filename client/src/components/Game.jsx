@@ -25,8 +25,9 @@ export class Game extends React.Component {
 		];
 		return <div className="game" style={styles.container}>
 			<MuiThemeProvider>
-				<Paper style={styles.paper} zDepth={1} children={children} />
+				<Paper children={children} style={styles.paper} zDepth={1}/>
 			</MuiThemeProvider>
 		</div>;
 	}
+
 };
