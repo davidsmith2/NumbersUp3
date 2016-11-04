@@ -2,7 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-import {getGuessAccuracyIconName} from '../common';
+import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
 	container: {

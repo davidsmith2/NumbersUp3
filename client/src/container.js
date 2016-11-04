@@ -12,7 +12,8 @@ function mapStateToProps(state) {
 		guessesMade: state.guessesMade,
 		guessesRemaining: state.guessesRemaining,
 		guesses: state.guesses,
-		result: state.result
+		result: state.result,
+		started: state.started
 	};
 }
 

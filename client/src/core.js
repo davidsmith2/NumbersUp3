@@ -1,3 +1,4 @@
+import {extend} from 'lodash';
 import 'babel-polyfill';
 
 const MAX_TILES = 25;
@@ -39,7 +40,7 @@ function getResult(guessAccuracy, guessesMade) {
 	return false;
 }
 
-export function getTiles(tile, guessAccuracy) {
+function getTiles(tile, guessAccuracy) {
 	let thisTile;
 	if (tile && guessAccuracy) {
 		thisTile = this.tiles.find((obj) => obj.number === tile.number);
@@ -52,11 +53,40 @@ export function getTiles(tile, guessAccuracy) {
 	}
 }
 
-export function getSecretNumber() {
+function getSecretNumber() {
 	return Math.floor(Math.random() * (MAX_TILES - 1 + 1) + 1);
 }
 
-export function handleGuess(state, tile) {
+export function getGuessAccuracyIconName(guessAccuracy) {
+	switch(guessAccuracy) {
+		case LOW_GUESS_DESCRIPTOR:
+			return 'arrow_downward';
+		case HIGH_GUESS_DESCRIPTOR:
+			return 'arrow_upward';
+		case CORRECT_GUESS_DESCRIPTOR:
+			return 'check';
+	}
+}
+
+export function getInitialState() {
+	return 	{
+		started: false,
+		secretNumber: getSecretNumber(),
+		tiles: getTiles(),
+		currentGuess: null,
+		guessAccuracy: null,
+		guessesAllowed: 13,
+		guessesMade: 0,
+		result: null,
+		guesses: []
+	};
+}
+
+export function play() {
+	return {started: true};
+}
+
+export function guess(state, tile) {
 	const guessAccuracy = getGuessAccuracy.call(state, tile.number);
 	const guessesMade = getGuessesMade.call(state);
 	const guesses = getGuesses.call(state, tile.number, guessAccuracy);
@@ -73,15 +103,6 @@ export function handleGuess(state, tile) {
 	return nextState;
 }
 
-export function setInitialState() {
-	return 	{
-		secretNumber: getSecretNumber(),
-		tiles: getTiles(),
-		currentGuess: null,
-		guessAccuracy: null,
-		guessesAllowed: 13,
-		guessesMade: 0,
-		result: null,
-		guesses: []
-	};
+export function replay() {
+	return extend({}, getInitialState(), play());
 }

@@ -3,45 +3,42 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import {ResultDescription} from './ResultDescription';
-
-
-export class Result extends React.Component {
+export class Splash extends React.Component {
     static contextTypes = {
         store: React.PropTypes.object.isRequired
     };
 
     constructor(props, context) {
     	super(props, context);
-    	this.replay = this.replay.bind(this);
+    	this.play = this.play.bind(this);
     }
 
 	render() {
 		const actions = [
 			<FlatButton
-				label='Replay'
+				label='Play'
 				primary={true}
 				keyboardFocused={true}
-				onTouchTap={this.replay} />
+				onTouchTap={this.play} />
 		];
 		return (
 			<MuiThemeProvider>
 				<Dialog
-					title={'You ' + this.props.data.result}
+					title='Numbers Up'
 					actions={actions}
 					modal={false}
-					open={!!this.props.data.result}
-					onRequestClose={this.replay}>
-					<ResultDescription secretNumber={this.props.data.secretNumber} />
+					open={!this.props.data.started}
+					onRequestClose={this.play}>
+					tktktk tktktk tktktk tktktk tktktk
 				</Dialog>
 			</MuiThemeProvider>
 		);
+
 	}
 
-	replay() {
+	play() {
 		this.context.store.dispatch({
-			type: 'REPLAY'
+			type: 'PLAY'
 		});
 	}
-
-}
+};

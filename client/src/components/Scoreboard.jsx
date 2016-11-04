@@ -3,7 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Badge from 'material-ui/Badge';
 import {wrap} from 'lodash';
 
-import {getGuessAccuracyIconName} from '../common';
+import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
 	float: 'right', 

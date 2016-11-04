@@ -5,6 +5,21 @@ import {reducer} from '../src/reducer';
 
 describe('reducer', () => {
 
+    describe('PLAY', () => {
+
+        it('starts a game', () => {
+            const state = {
+                started: false
+            };
+            const action = {
+                type: 'PLAY'
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.started).to.equal(true);
+        });
+
+    });
+
     describe('GUESS', () => {
 
         it('tracks the current guess', () => {
