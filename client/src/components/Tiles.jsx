@@ -5,29 +5,34 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import {getGuessAccuracyIconName} from '../common';
 
 const styles = {
-  gridListRoot: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around'
-  },
-  gridList: {
-    width: '100%',
-    height: '100%',
-    overflowY: 'hidden'
-  },
-  gridTile: {
-    backgroundColor: '#eee',
-    border: '1px solid #ddd'
-  },
-  gridTileContent: {
-    position: 'relative',
-	top: '50%',
-	transform: 'translateY(-50%)',
-  	textAlign: 'center'
-  },
-  gridTileContentFontSize: {
-  	fontSize: '34px'
-  }
+	container: {
+		float: 'left', 
+		width: '680px', 
+		marginRight: '20px'
+	},
+	gridListRoot: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around'
+	},
+	gridList: {
+		width: '100%',
+		height: '100%',
+		overflowY: 'hidden'
+	},
+	gridTile: {
+		backgroundColor: '#eee',
+		border: '1px solid #ddd'
+	},
+	gridTileContent: {
+		position: 'relative',
+		top: '50%',
+		transform: 'translateY(-50%)',
+		textAlign: 'center'
+	},
+	gridTileContentFontSize: {
+		fontSize: '34px'
+	}
 };
 
 export class Tiles extends React.Component {
@@ -38,7 +43,7 @@ export class Tiles extends React.Component {
 	render() {
 		return (
 			<MuiThemeProvider>
-				<div style={{float: 'left', width: '680px', marginRight: '20px'}}>
+				<div style={styles.container}>
 					<div className="gridListRoot" style={styles.gridListRoot}>
 						<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
 							{this.props.data.tiles.map(this.renderTile.bind(this))}

@@ -5,6 +5,17 @@ import {wrap} from 'lodash';
 
 import {getGuessAccuracyIconName} from '../common';
 
+const styles = {
+	float: 'right', 
+	width: '200px', 
+	marginRight: '20px'
+};
+
+const getCurrentGuessBadgeContent = (state) => {
+	return state.currentGuess || '-';
+
+};
+
 const getGuessAccuracyBadgeContent = (func, state) => {
 	if (!state.guessAccuracy) {
 		return '-';
@@ -12,13 +23,15 @@ const getGuessAccuracyBadgeContent = (func, state) => {
 	return (<i className="material-icons">{func(state.guessAccuracy)}</i>);
 };
 
+const getGuessesRemainingBadgeContent = (state) => {
+	return state.guessesAllowed - state.guessesMade;
+};
+
 export class Scoreboard extends React.Component {
 	badges = [
 		{
 			rootContent: 'Current',
-			badgeContent: function(state) {
-				return state.currentGuess || '-';
-			}
+			badgeContent: getCurrentGuessBadgeContent
 		},
 		{
 			rootContent: 'Accuracy',
@@ -34,16 +47,14 @@ export class Scoreboard extends React.Component {
 		},
 		{
 			rootContent: 'Remaining',
-			badgeContent: function(state) {
-				return state.guessesAllowed - state.guessesMade;
-			}
+			badgeContent: getGuessesRemainingBadgeContent
 		}
 	];
 
 	render() {
 		return (
 			<MuiThemeProvider>
-				<div className="scoreboard" style={{float: 'right', width: '200px', marginRight: '20px'}}>
+				<div className="scoreboard" style={styles}>
 					{this.badges.map(this.renderBadge.bind(this))}
 				</div>
 			</MuiThemeProvider>
