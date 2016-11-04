@@ -2,11 +2,18 @@ import {extend} from 'lodash';
 import 'babel-polyfill';
 
 const MAX_TILES = 25;
-const LOW_GUESS_DESCRIPTOR = 'Low';
-const HIGH_GUESS_DESCRIPTOR = 'High';
+const GUESSES_ALLOWED = 13;
+
 const CORRECT_GUESS_DESCRIPTOR = 'Match';
-const WIN_DESCRIPTOR = 'Win';
+const HIGH_GUESS_DESCRIPTOR = 'High';
+const LOW_GUESS_DESCRIPTOR = 'Low';
+
+const CORRECT_GUESS_ICON_NAME = 'check';
+const HIGH_GUESS_ICON_NAME = 'arrow_upward';
+const LOW_GUESS_ICON_NAME = 'arrow_downward';
+
 const LOSE_DESCRIPTOR = 'Lose';
+const WIN_DESCRIPTOR = 'Win';
 
 function getGuessAccuracy(number) {
 	if (number < this.secretNumber) {
@@ -60,11 +67,11 @@ function getSecretNumber() {
 export function getGuessAccuracyIconName(guessAccuracy) {
 	switch(guessAccuracy) {
 		case LOW_GUESS_DESCRIPTOR:
-			return 'arrow_downward';
+			return LOW_GUESS_ICON_NAME;
 		case HIGH_GUESS_DESCRIPTOR:
-			return 'arrow_upward';
+			return HIGH_GUESS_ICON_NAME;
 		case CORRECT_GUESS_DESCRIPTOR:
-			return 'check';
+			return CORRECT_GUESS_ICON_NAME;
 	}
 }
 
@@ -75,7 +82,7 @@ export function getInitialState() {
 		tiles: getTiles(),
 		currentGuess: null,
 		guessAccuracy: null,
-		guessesAllowed: 13,
+		guessesAllowed: GUESSES_ALLOWED,
 		guessesMade: 0,
 		result: null,
 		guesses: []
