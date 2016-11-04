@@ -11,20 +11,20 @@ const styles = {
 	marginRight: '20px'
 };
 
-const getCurrentGuessBadgeContent = (state) => {
-	return state.currentGuess || '-';
+const getCurrentGuessBadgeContent = (game) => {
+	return game.currentGuess || '-';
 
 };
 
-const getGuessAccuracyBadgeContent = (func, state) => {
-	if (!state.guessAccuracy) {
+const getGuessAccuracyBadgeContent = (func, game) => {
+	if (!game.guessAccuracy) {
 		return '-';
 	}
-	return (<i className="material-icons">{func(state.guessAccuracy)}</i>);
+	return (<i className="material-icons">{func(game.guessAccuracy)}</i>);
 };
 
-const getGuessesRemainingBadgeContent = (state) => {
-	return state.guessesAllowed - state.guessesMade;
+const getGuessesRemainingBadgeContent = (game) => {
+	return game.guessesAllowed - game.guessesMade;
 };
 
 export class Scoreboard extends React.Component {
@@ -83,10 +83,10 @@ export class Scoreboard extends React.Component {
 
 	getBadgeContent(config) {
 		if (typeof config === 'string') {
-			return this.props.data[config];
+			return this.props.game[config];
 		}
 		if (typeof config === 'function') {
-			return config(this.props.data);
+			return config(this.props.game);
 		}
 
 	}

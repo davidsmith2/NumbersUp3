@@ -4,16 +4,16 @@ import {App} from './components/App';
 
 function mapStateToProps(state) {
 	return {
+		started: state.started,
 		secretNumber: state.secretNumber,
+		result: state.result,
 		tiles: state.tiles,
-		guessesAllowed: state.guessesAllowed,
 		currentGuess: state.currentGuess,
 		guessAccuracy: state.guessAccuracy,
+		guessesAllowed: state.guessesAllowed,
 		guessesMade: state.guessesMade,
 		guessesRemaining: state.guessesRemaining,
-		guesses: state.guesses,
-		result: state.result,
-		started: state.started
+		guesses: state.guesses
 	};
 }
 

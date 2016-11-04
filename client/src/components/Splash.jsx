@@ -27,7 +27,7 @@ export class Splash extends React.Component {
 					title='Numbers Up'
 					actions={actions}
 					modal={false}
-					open={!this.props.data.started}
+					open={!this.props.started}
 					onRequestClose={this.play}>
 					tktktk tktktk tktktk tktktk tktktk
 				</Dialog>

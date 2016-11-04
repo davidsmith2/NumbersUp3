@@ -27,12 +27,12 @@ export class Result extends React.Component {
 		return (
 			<MuiThemeProvider>
 				<Dialog
-					title={'You ' + this.props.data.result}
+					title={'You ' + this.props.result}
 					actions={actions}
 					modal={false}
-					open={!!this.props.data.result}
+					open={!!this.props.result}
 					onRequestClose={this.replay}>
-					<ResultDescription secretNumber={this.props.data.secretNumber} />
+					<ResultDescription secretNumber={this.props.secretNumber} />
 				</Dialog>
 			</MuiThemeProvider>
 		);

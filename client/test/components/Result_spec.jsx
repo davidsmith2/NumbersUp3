@@ -19,7 +19,7 @@ describe('Result', () => {
 			result: 'Win',
 			secretNumber: 1
 		};
-		const component = shallow(<Result data={state} />, mountOptions);
+		const component = shallow(<Result result={state.result} secretNumber={state.secretNumber} />, mountOptions);
 		expect(component.find(Dialog).node.props.title).to.equal('You Win');
 	});
 
@@ -28,7 +28,7 @@ describe('Result', () => {
 			result: 'Lose',
 			secretNumber: 1
 		};
-		const component = shallow(<Result data={state} />, mountOptions);
+		const component = shallow(<Result result={state.result} secretNumber={state.secretNumber} />, mountOptions);
 		expect(component.find(Dialog).node.props.title).to.equal('You Lose');
 	});
 

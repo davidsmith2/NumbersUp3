@@ -15,7 +15,7 @@ describe('Scoreboard', () => {
 			guessesAllowed: 13,
 			guessesMade: 1
 		};
-		const component = renderIntoDocument(<Scoreboard data={state} />);
+		const component = renderIntoDocument(<Scoreboard game={state} />);
 		const sections = scryRenderedDOMComponentsWithClass(component, 'scoreboardSection');
 		expect(sections.length).to.equal(5);
 	});

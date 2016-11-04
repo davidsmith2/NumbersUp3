@@ -46,7 +46,7 @@ export class Tiles extends React.Component {
 				<div style={styles.container}>
 					<div className="gridListRoot" style={styles.gridListRoot}>
 						<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
-							{this.props.data.tiles.map(this.renderTile.bind(this))}
+							{this.props.tiles.map(this.renderTile.bind(this))}
 						</GridList>
 					</div>
 				</div>

@@ -20,8 +20,8 @@ const styles = {
 export class Game extends React.Component {
 	render() {
 		const children = [
-			<Tiles key="tiles" ref="tiles" data={this.props.data} style={styles.tiles} />,
-			<Scoreboard key="scoreboard" ref="scoreboard" data={this.props.data} style={styles.scoreboard} />
+			<Tiles key="tiles" ref="tiles" tiles={this.props.tiles} />,
+			<Scoreboard key="scoreboard" ref="scoreboard" game={this.props.game} />
 		];
 		return <div className="game" style={styles.container}>
 			<MuiThemeProvider>

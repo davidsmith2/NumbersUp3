@@ -14,12 +14,8 @@ describe('Tiles', () => {
 				}
 			}
 		};
-		const state = {
-			tiles: [{number: 1, guessAccuracy: 'Low'}, {number: 2}, {number: 3}],
-			secretNumber: 2,
-			guesses: [{number: 1}]
-		};
-		const component = mount(<Tiles data={state} />, mountOptions);
+		const tiles = [{number: 1, guessAccuracy: 'Low'}, {number: 2}, {number: 3}];
+		const component = mount(<Tiles tiles={tiles} />, mountOptions);
 		expect(component.find('.gridTileContentLink').length).to.equal(2);
 		expect(component.find('.gridTileContentVisited').length).to.equal(1);
 	});

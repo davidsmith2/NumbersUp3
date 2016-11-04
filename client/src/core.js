@@ -79,12 +79,12 @@ export function getInitialState() {
 	return 	{
 		started: false,
 		secretNumber: getSecretNumber(),
+		result: null,
 		tiles: getTiles(),
 		currentGuess: null,
 		guessAccuracy: null,
 		guessesAllowed: GUESSES_ALLOWED,
 		guessesMade: 0,
-		result: null,
 		guesses: []
 	};
 }
@@ -100,12 +100,12 @@ export function guess(state, tile) {
 	const result = getResult.call(state, guessAccuracy, guessesMade);
 	const tiles = getTiles.call(state, tile, guessAccuracy);
 	let nextState = {
+		result: result,
+		tiles: tiles,
 		currentGuess: tile.number,
 		guessAccuracy: guessAccuracy,
 		guessesMade: guessesMade,
-		guesses: guesses,
-		result: result,
-		tiles: tiles
+		guesses: guesses
 	};
 	return nextState;
 }
