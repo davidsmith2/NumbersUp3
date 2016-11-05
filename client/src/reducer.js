@@ -20,15 +20,15 @@ export function reducer(state = getInitialState(), action) {
 	  case 'OPEN_SETTINGS':
 	    return changeState(state, openSettings());
 	  case 'SAVE_SETTINGS':
-	    return changeState(state, saveSettings(action.guessesAllowed));
+	    return changeState(state, saveSettings(action.data));
 	  case 'CANCEL_SETTINGS':
 	    return changeState(state, cancelSettings());
 	  case 'GUESS':
 	    return changeState(state, guess(state, action.tile));
 	  case 'REPLAY':
-	    return changeState(state, replay(state.guessesAllowed));
+	    return changeState(state, replay(state));
 	  case 'QUIT':
-	    return changeState(state, quit(state.guessesAllowed));
+	    return changeState(state, quit(state));
   }
   return state;
 }

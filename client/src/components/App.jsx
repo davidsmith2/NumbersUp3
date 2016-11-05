@@ -20,7 +20,7 @@ export class App extends React.Component {
 			els.push(<Splash key="splash" open={!!this.props.dialog} />)
 		}
 		if (isEqual(this.props.dialog, 'settings')) {
-			els.push(<Settings key="settings" open={!!this.props.dialog} guessesAllowed={this.props.guessesAllowed} />)
+			els.push(<Settings key="settings" open={!!this.props.dialog} guessesAllowed={this.props.guessesAllowed} tiles={this.props.tiles.length} />)
 		}
 		if (isEqual(this.props.dialog, 'result')) {
 			els.push(<Result key="result" open={!!this.props.dialog} result={this.props.result} secretNumber={this.props.secretNumber} />)

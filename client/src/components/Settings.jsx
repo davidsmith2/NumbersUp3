@@ -4,6 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Subheader from 'material-ui/Subheader';
+import {bindAll} from 'lodash';
 
 import {
 	SETTINGS_DIALOG_TITLE,
@@ -18,9 +19,14 @@ export class Settings extends React.Component {
 
     constructor(props, context) {
     	super(props, context);
-    	this.save = this.save.bind(this);
-    	this.cancel = this.cancel.bind(this);
-    	this.onChange = this.onChange.bind(this);
+    	bindAll(this, ['save', 'cancel', 'onChangeGuessesAllowed', 'onChangeTiles']);
+    }
+
+    componentWillMount() {
+		this.setState({
+			guessesAllowed: this.props.guessesAllowed,
+			tiles: this.props.tiles
+		});
     }
 
 	render() {
@@ -48,12 +54,23 @@ export class Settings extends React.Component {
 					<Subheader inset={false}>Guesses allowed
 						<RadioButtonGroup 
 							name="guessesAllowed" 
-							onChange={this.onChange} 
+							onChange={this.onChangeGuessesAllowed} 
 							defaultSelected={this.props.guessesAllowed}
 						>
 							<RadioButton label="13" value={13} />
 							<RadioButton label="10" value={10} />
 							<RadioButton label="7" value={7} />
+						</RadioButtonGroup>
+					</Subheader>
+					<Subheader inset={false}>Tiles
+						<RadioButtonGroup 
+							name="tiles" 
+							onChange={this.onChangeTiles} 
+							defaultSelected={this.props.tiles}
+						>
+							<RadioButton label="100" value={100} />
+							<RadioButton label="50" value={50} />
+							<RadioButton label="25" value={25} />
 						</RadioButtonGroup>
 					</Subheader>
 				</Dialog>
@@ -62,16 +79,25 @@ export class Settings extends React.Component {
 
 	}
 
-	onChange(event, value) {
+	onChangeGuessesAllowed(event, value) {
 		this.setState({
 			guessesAllowed: Number(value)
+		})
+	}
+
+	onChangeTiles(event, value) {
+		this.setState({
+			tiles: Number(value)
 		})
 	}
 
 	save() {
 		this.context.store.dispatch({
 			type: 'SAVE_SETTINGS',
-			guessesAllowed: this.state.guessesAllowed
+			data: {
+				guessesAllowed: this.state.guessesAllowed,
+				tiles: this.state.tiles
+			}
 		});
 	}
 

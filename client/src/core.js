@@ -70,21 +70,37 @@ function getResult(guessAccuracy, guessesMade) {
 	};
 }
 
-function getTiles(tile, guessAccuracy) {
-	let thisTile;
-	if (tile && guessAccuracy) {
-		thisTile = this.tiles.find((obj) => obj.number === tile.number);
-		thisTile.guessAccuracy = guessAccuracy;
-		return this.tiles;
-	} else {
-		return Array.from(Array(MAX_TILES)).map((e,i) => {
+function getTiles(options) {
+	function generateTiles(numTiles) {
+		return Array.from(Array(numTiles)).map((e,i) => {
 			return {number: i + 1, guessAccuracy: false};
 		});
 	}
+	let thisTile;
+	if (!options) {
+		return generateTiles(MAX_TILES);
+	}
+	if (options.tiles) {
+		return generateTiles(options.tiles);
+	}
+	if (options.tile && options.guessAccuracy) {
+		thisTile = this.tiles.find((obj) => obj.number === options.tile.number);
+		thisTile.guessAccuracy = options.guessAccuracy;
+		return this.tiles;
+	}
 }
 
-function getSecretNumber() {
-	return Math.floor(Math.random() * (MAX_TILES - 1 + 1) + 1);
+function getSecretNumber(max = MAX_TILES) {
+	return Math.floor(Math.random() * (max - 1 + 1) + 1);
+}
+
+function handleResultDialogAction(state) {
+	return extend({}, getInitialState(), {
+		secretNumber: getSecretNumber(state.tiles.length),
+		tiles: getTiles({tiles: state.tiles.length}),
+		guessesAllowed: state.guessesAllowed, 
+		dialog: state.dialog
+	});
 }
 
 export function getGuessAccuracyIconName(guessAccuracy) {
@@ -125,9 +141,11 @@ export function openSettings() {
 	};
 }
 
-export function saveSettings(guessesAllowed) {
+export function saveSettings(data) {
 	return {
-		guessesAllowed: guessesAllowed, 
+		secretNumber: getSecretNumber(data.tiles),
+		guessesAllowed: data.guessesAllowed,
+		tiles: getTiles({tiles: data.tiles}),
 		dialog: 'splash'
 	};
 }
@@ -143,7 +161,10 @@ export function guess(state, tile) {
 	const guessesMade = getGuessesMade.call(state);
 	const guesses = getGuesses.call(state, tile.number, guessAccuracy);
 	const result = getResult.call(state, guessAccuracy, guessesMade);
-	const tiles = getTiles.call(state, tile, guessAccuracy);
+	const tiles = getTiles.call(state, {
+		tile: tile,
+		guessAccuracy: guessAccuracy
+	});
 	let nextState = {
 		tiles: tiles,
 		currentGuess: tile.number,
@@ -154,15 +175,10 @@ export function guess(state, tile) {
 	return extend({}, nextState, result);
 }
 
-export function replay(guessesAllowed) {
-	return extend({}, getInitialState(), {
-		guessesAllowed: guessesAllowed, 
-		dialog: false
-	});
+export function replay(state) {
+	return handleResultDialogAction(extend(state, {dialog: false}));
 }
 
-export function quit(guessesAllowed) {
-	return extend({}, getInitialState(), {
-		guessesAllowed: guessesAllowed
-	});
+export function quit(state) {
+	return handleResultDialogAction(extend(state, {dialog: 'splash'}));
 }
