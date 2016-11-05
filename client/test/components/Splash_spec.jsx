@@ -15,14 +15,14 @@ describe('Splash', () => {
 	};
 
 	it('is shown if game has not started', () => {
-		const started = false;
-		const component = shallow(<Splash started={started} />, mountOptions);
+		const dialog = 'splash';
+		const component = shallow(<Splash open={!!dialog} />, mountOptions);
 		expect(component.find(Dialog).node.props.open).to.equal(true);
 	});
 
 	it('is hidden if game has started', () => {
-		const started = true;
-		const component = shallow(<Splash started={started} />, mountOptions);
+		const dialog = false;
+		const component = shallow(<Splash open={!!dialog} />, mountOptions);
 		expect(component.find(Dialog).node.props.open).to.equal(false);
 	});
 

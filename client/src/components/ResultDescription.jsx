@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {RESULT_DIALOG_DESCRIPTION} from '../core';
+
 export const ResultDescription = (props) => {
-	return <p>{`The secret number was ${props.secretNumber}.`}</p>
+	return <p>{RESULT_DIALOG_DESCRIPTION(props.secretNumber)}</p>
 };

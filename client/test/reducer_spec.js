@@ -9,13 +9,77 @@ describe('reducer', () => {
 
         it('starts a game', () => {
             const state = {
-                started: false
+                dialog: 'splash'
             };
             const action = {
                 type: 'PLAY'
             };
             const nextState = reducer(state, action);
-            expect(nextState.started).to.equal(true);
+            expect(nextState.dialog).to.equal(false);
+        });
+
+    });
+
+    describe('OPEN_SETTINGS', () => {
+
+        it('opens the settings dialog', () => {
+            const state = {
+                dialog: 'splash'
+            };
+            const action = {
+                type: 'OPEN_SETTINGS'
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.dialog).to.equal('settings');
+        });
+
+    });
+
+    describe('CANCEL_SETTINGS', () => {
+
+        it('returns to the splash dialog', () => {
+            const state = {
+                dialog: 'settings'
+            };
+            const action = {
+                type: 'CANCEL_SETTINGS'
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.dialog).to.equal('splash');
+        });
+
+    });
+
+    describe('REPLAY', () => {
+
+        it('returns to the game', () => {
+            const state = {
+                dialog: 'result',
+                result: 'win',
+                guessesMade: 3
+            };
+            const action = {
+                type: 'REPLAY'
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.dialog).to.equal(false);
+            expect(nextState.result).to.equal(null);
+            expect(nextState.guessesMade).to.equal(0);
+        });
+
+    });
+
+    describe('QUIT', () => {
+
+        it('returns to the splash dialog', () => {
+            const state = {
+                dialog: 'result'
+            };
+            const action = {
+                type: 'QUIT'
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.dialog).to.equal('splash');
         });
 
     });

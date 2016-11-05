@@ -4,7 +4,7 @@ import {App} from './components/App';
 
 function mapStateToProps(state) {
 	return {
-		started: state.started,
+		dialog: state.dialog,
 		secretNumber: state.secretNumber,
 		result: state.result,
 		tiles: state.tiles,

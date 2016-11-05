@@ -2,7 +2,7 @@ import {extend} from 'lodash';
 import 'babel-polyfill';
 
 const MAX_TILES = 100;
-const GUESSES_ALLOWED = 7;
+const GUESSES_ALLOWED = 13;
 
 const CORRECT_GUESS_DESCRIPTOR = 'Match';
 const HIGH_GUESS_DESCRIPTOR = 'High';
@@ -14,6 +14,20 @@ const LOW_GUESS_ICON_NAME = 'arrow_downward';
 
 const LOSE_DESCRIPTOR = 'Lose';
 const WIN_DESCRIPTOR = 'Win';
+
+export const SPLASH_DIALOG_TITLE = 'Numbers Up';
+export const SPLASH_DIALOG_DESCRIPTION = 'Try to guess the secret number before you run out of turns.';
+export const SPLASH_DIALOG_PLAY_BUTTON_LABEL = 'Play';
+export const SPLASH_DIALOG_SETTINGS_BUTTON_LABEL = 'Settings';
+
+export const SETTINGS_DIALOG_TITLE = 'Settings';
+export const SETTINGS_DIALOG_SAVE_BUTTON_LABEL = 'Save';
+export const SETTINGS_DIALOG_CANCEL_BUTTON_LABEL = 'Cancel';
+
+export const RESULT_DIALOG_TITLE = (result) => `You ${result}!`;
+export const RESULT_DIALOG_DESCRIPTION = (secretNumber) => `The secret number was ${secretNumber}.`;
+export const RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
+export const RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
 
 function getGuessAccuracy(number) {
 	if (number < this.secretNumber) {
@@ -39,12 +53,21 @@ function getGuesses(number, guessAccuracy) {
 
 function getResult(guessAccuracy, guessesMade) {
 	if (guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
-		return WIN_DESCRIPTOR;
+		return {
+			result: WIN_DESCRIPTOR,
+			dialog: 'result'
+		};
 	}
 	if (guessesMade === this.guessesAllowed) {
-		return LOSE_DESCRIPTOR;
+		return {
+			result: LOSE_DESCRIPTOR,
+			dialog: 'result'
+		};
 	}
-	return false;
+	return {
+		result: false,
+		dialog: false
+	};
 }
 
 function getTiles(tile, guessAccuracy) {
@@ -77,7 +100,8 @@ export function getGuessAccuracyIconName(guessAccuracy) {
 
 export function getInitialState() {
 	return 	{
-		started: false,
+		dialog: 'splash',
+		settings: false,
 		secretNumber: getSecretNumber(),
 		result: null,
 		tiles: getTiles(),
@@ -90,7 +114,28 @@ export function getInitialState() {
 }
 
 export function play() {
-	return {started: true};
+	return {
+		dialog: false
+	};
+}
+
+export function openSettings() {
+	return {
+		dialog: 'settings'
+	};
+}
+
+export function saveSettings(guessesAllowed) {
+	return {
+		guessesAllowed: guessesAllowed, 
+		dialog: 'splash'
+	};
+}
+
+export function cancelSettings() {
+	return {
+		dialog: 'splash'
+	};
 }
 
 export function guess(state, tile) {
@@ -100,16 +145,24 @@ export function guess(state, tile) {
 	const result = getResult.call(state, guessAccuracy, guessesMade);
 	const tiles = getTiles.call(state, tile, guessAccuracy);
 	let nextState = {
-		result: result,
 		tiles: tiles,
 		currentGuess: tile.number,
 		guessAccuracy: guessAccuracy,
 		guessesMade: guessesMade,
 		guesses: guesses
 	};
-	return nextState;
+	return extend({}, nextState, result);
 }
 
-export function replay() {
-	return extend({}, getInitialState(), play());
+export function replay(guessesAllowed) {
+	return extend({}, getInitialState(), {
+		guessesAllowed: guessesAllowed, 
+		dialog: false
+	});
+}
+
+export function quit(guessesAllowed) {
+	return extend({}, getInitialState(), {
+		guessesAllowed: guessesAllowed
+	});
 }
