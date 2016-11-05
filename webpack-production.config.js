@@ -1,10 +1,9 @@
 var path = require('path');
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080',
-		'webpack/hot/only-dev-server',
 		'babel-polyfill',
 		'./src/index.jsx'
 	],
@@ -13,7 +12,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loaders: ['react-hot', 'babel']
+				loaders: ['babel']
 			}
 		]
 	},
@@ -22,17 +21,13 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 	output: {
-		path: path.join(__dirname, 'dist'),
+		path: path.join(__dirname, 'docs'),
 		publicPath: '/',
 		filename: 'bundle.js'
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin()
-	],
-	devtool: 'source-map',
-    externals: {
-        'react/addons': true,
-        'react/lib/ExecutionEnvironment': true,
-        'react/lib/ReactContext': true
-    }
+		new CopyWebpackPlugin([
+			{from: 'dist/index.html'}
+		])
+	]
 };
