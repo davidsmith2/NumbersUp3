@@ -68,9 +68,9 @@ export class Settings extends React.Component {
 							onChange={this.onChangeTiles} 
 							defaultSelected={this.props.tiles}
 						>
-							<RadioButton label="100" value={100} />
-							<RadioButton label="50" value={50} />
 							<RadioButton label="25" value={25} />
+							<RadioButton label="50" value={50} />
+							<RadioButton label="100" value={100} />
 						</RadioButtonGroup>
 					</Subheader>
 				</Dialog>

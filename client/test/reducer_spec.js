@@ -39,14 +39,19 @@ describe('reducer', () => {
 
         it('saves number of guesses allowed', () => {
             const state = {
-                guessesAllowed: 7
+                guessesAllowed: 7,
+                tiles: 100
             };
             const action = {
                 type: 'SAVE_SETTINGS',
-                guessesAllowed: 10
+                data: {
+                    guessesAllowed: 10,
+                    tiles: 50
+                }
             };
             const nextState = reducer(state, action);
             expect(nextState.guessesAllowed).to.equal(10);
+            expect(nextState.tiles.length).to.equal(50);
         });
 
         it('returns the user to the splash dialog', () => {
@@ -55,7 +60,10 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'SAVE_SETTINGS',
-                guessesAllowed: 10
+                data: {
+                    guessesAllowed: 10,
+                    tiles: 50
+                }
             };
             const nextState = reducer(state, action);
             expect(nextState.dialog).to.equal('splash');
@@ -84,7 +92,8 @@ describe('reducer', () => {
             const state = {
                 dialog: 'result',
                 result: 'win',
-                guessesMade: 3
+                guessesMade: 3,
+                tiles: [{number: 1}]
             };
             const action = {
                 type: 'REPLAY'
@@ -101,7 +110,8 @@ describe('reducer', () => {
 
         it('returns to the splash dialog', () => {
             const state = {
-                dialog: 'result'
+                dialog: 'result',
+                tiles: [{number: 1}]
             };
             const action = {
                 type: 'QUIT'

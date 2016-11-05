@@ -1,8 +1,8 @@
 import {extend} from 'lodash';
 import 'babel-polyfill';
 
-const MAX_TILES = 100;
-const GUESSES_ALLOWED = 13;
+const DEFAULT_TILES = 25;
+const DEFAULT_GUESSES_ALLOWED = 13;
 
 const CORRECT_GUESS_DESCRIPTOR = 'Match';
 const HIGH_GUESS_DESCRIPTOR = 'High';
@@ -14,6 +14,10 @@ const LOW_GUESS_ICON_NAME = 'arrow_downward';
 
 const LOSE_DESCRIPTOR = 'Lose';
 const WIN_DESCRIPTOR = 'Win';
+
+const SPLASH_DIALOG_NAME = 'splash';
+const SETTINGS_DIALOG_NAME = 'settings';
+const RESULT_DIALOG_NAME = 'result';
 
 export const SPLASH_DIALOG_TITLE = 'Numbers Up';
 export const SPLASH_DIALOG_DESCRIPTION = 'Try to guess the secret number before you run out of turns.';
@@ -29,11 +33,11 @@ export const RESULT_DIALOG_DESCRIPTION = (secretNumber) => `The secret number wa
 export const RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
 export const RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
 
-function getGuessAccuracy(number) {
-	if (number < this.secretNumber) {
+function getGuessAccuracy(currentGuess) {
+	if (currentGuess < this.secretNumber) {
 		return LOW_GUESS_DESCRIPTOR;
 	}
-	if (number > this.secretNumber) {
+	if (currentGuess > this.secretNumber) {
 		return HIGH_GUESS_DESCRIPTOR;
 	}
 	return CORRECT_GUESS_DESCRIPTOR;
@@ -43,30 +47,27 @@ function getGuessesMade() {
 	return this.guessesMade + 1;
 }
 
-function getGuesses(number, guessAccuracy) {
+function getGuesses(currentGuess, guessAccuracy) {
 	this.guesses.push({
-		number: number,
+		number: currentGuess,
 		guessAccuracy: guessAccuracy
 	});
 	return this.guesses;
 }
 
 function getResult(guessAccuracy, guessesMade) {
+	let result = false;
+	let dialog = false;
 	if (guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
-		return {
-			result: WIN_DESCRIPTOR,
-			dialog: 'result'
-		};
-	}
-	if (guessesMade === this.guessesAllowed) {
-		return {
-			result: LOSE_DESCRIPTOR,
-			dialog: 'result'
-		};
+		result = WIN_DESCRIPTOR;
+		dialog = RESULT_DIALOG_NAME;
+	} else if (guessesMade === this.guessesAllowed) {
+		result = LOSE_DESCRIPTOR;
+		dialog = RESULT_DIALOG_NAME;
 	}
 	return {
-		result: false,
-		dialog: false
+		result: result,
+		dialog: dialog
 	};
 }
 
@@ -78,7 +79,7 @@ function getTiles(options) {
 	}
 	let thisTile;
 	if (!options) {
-		return generateTiles(MAX_TILES);
+		return generateTiles(DEFAULT_TILES);
 	}
 	if (options.tiles) {
 		return generateTiles(options.tiles);
@@ -90,15 +91,15 @@ function getTiles(options) {
 	}
 }
 
-function getSecretNumber(max = MAX_TILES) {
+function getSecretNumber(max = DEFAULT_TILES) {
 	return Math.floor(Math.random() * (max - 1 + 1) + 1);
 }
 
 function handleResultDialogAction(state) {
 	return extend({}, getInitialState(), {
 		secretNumber: getSecretNumber(state.tiles.length),
+		guessesAllowed: state.guessesAllowed,
 		tiles: getTiles({tiles: state.tiles.length}),
-		guessesAllowed: state.guessesAllowed, 
 		dialog: state.dialog
 	});
 }
@@ -123,7 +124,7 @@ export function getInitialState() {
 		tiles: getTiles(),
 		currentGuess: null,
 		guessAccuracy: null,
-		guessesAllowed: GUESSES_ALLOWED,
+		guessesAllowed: DEFAULT_GUESSES_ALLOWED,
 		guessesMade: 0,
 		guesses: []
 	};
@@ -137,7 +138,7 @@ export function play() {
 
 export function openSettings() {
 	return {
-		dialog: 'settings'
+		dialog: SETTINGS_DIALOG_NAME
 	};
 }
 
@@ -146,33 +147,33 @@ export function saveSettings(data) {
 		secretNumber: getSecretNumber(data.tiles),
 		guessesAllowed: data.guessesAllowed,
 		tiles: getTiles({tiles: data.tiles}),
-		dialog: 'splash'
+		dialog: SPLASH_DIALOG_NAME
 	};
 }
 
 export function cancelSettings() {
 	return {
-		dialog: 'splash'
+		dialog: SPLASH_DIALOG_NAME
 	};
 }
 
 export function guess(state, tile) {
-	const guessAccuracy = getGuessAccuracy.call(state, tile.number);
+	const currentGuess = tile.number;
+	const guessAccuracy = getGuessAccuracy.call(state, currentGuess);
 	const guessesMade = getGuessesMade.call(state);
-	const guesses = getGuesses.call(state, tile.number, guessAccuracy);
+	const guesses = getGuesses.call(state, currentGuess, guessAccuracy);
 	const result = getResult.call(state, guessAccuracy, guessesMade);
 	const tiles = getTiles.call(state, {
-		tile: tile,
-		guessAccuracy: guessAccuracy
+		guessAccuracy: guessAccuracy,
+		tile: tile
 	});
-	let nextState = {
-		tiles: tiles,
-		currentGuess: tile.number,
+	return extend({}, {
+		currentGuess: currentGuess,
 		guessAccuracy: guessAccuracy,
 		guessesMade: guessesMade,
-		guesses: guesses
-	};
-	return extend({}, nextState, result);
+		guesses: guesses,
+		tiles: tiles
+	}, result);
 }
 
 export function replay(state) {
@@ -180,5 +181,5 @@ export function replay(state) {
 }
 
 export function quit(state) {
-	return handleResultDialogAction(extend(state, {dialog: 'splash'}));
+	return handleResultDialogAction(extend(state, {dialog: SPLASH_DIALOG_NAME}));
 }
