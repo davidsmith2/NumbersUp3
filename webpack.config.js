@@ -1,3 +1,4 @@
+var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loaders: ["babel"]
+				loaders: ['react-hot', 'babel']
 			}
 		]
 	},
@@ -21,13 +22,9 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 	output: {
-		path: __dirname + '/dist',
+		path: path.join(__dirname, 'docs'),
 		publicPath: '/',
 		filename: 'bundle.js'
-	},
-	devServer: {
-		contentBase: './dist',
-		hot: true
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin()
