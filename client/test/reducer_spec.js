@@ -35,6 +35,34 @@ describe('reducer', () => {
 
     });
 
+    describe('SAVE_SETTINGS', () => {
+
+        it('saves number of guesses allowed', () => {
+            const state = {
+                guessesAllowed: 7
+            };
+            const action = {
+                type: 'SAVE_SETTINGS',
+                guessesAllowed: 10
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.guessesAllowed).to.equal(10);
+        });
+
+        it('returns the user to the splash dialog', () => {
+            const state = {
+                dialog: 'settings'
+            };
+            const action = {
+                type: 'SAVE_SETTINGS',
+                guessesAllowed: 10
+            };
+            const nextState = reducer(state, action);
+            expect(nextState.dialog).to.equal('splash');
+        });
+
+    });
+
     describe('CANCEL_SETTINGS', () => {
 
         it('returns to the splash dialog', () => {
