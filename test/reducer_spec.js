@@ -263,5 +263,48 @@ describe('reducer', () => {
 
     });
 
+    describe('GAME', () => {
+
+        it('is won if the player guesses the secret number', () => {
+            const actions = [
+                {type: 'PLAY'},
+                {type: 'GUESS', tile: {number: 1}},
+                {type: 'GUESS', tile: {number: 2}}
+            ];
+            const finalState = actions.reduce(reducer, {
+                secretNumber: 2,
+                tiles: [
+                    {number: 1},
+                    {number: 2},
+                    {number: 3}
+                ],
+                guessesAllowed: 2,
+                guessesMade: 0,
+                guesses: []
+            });
+            expect(finalState.result).to.equal('Win');
+        });
+
+        it('is lost if the player fails to guess the secret number', () => {
+            const actions = [
+                {type: 'PLAY'},
+                {type: 'GUESS', tile: {number: 1}},
+                {type: 'GUESS', tile: {number: 2}}
+            ];
+            const finalState = actions.reduce(reducer, {
+                secretNumber: 3,
+                tiles: [
+                    {number: 1},
+                    {number: 2},
+                    {number: 3}
+                ],
+                guessesAllowed: 2,
+                guessesMade: 0,
+                guesses: []
+            });
+            expect(finalState.result).to.equal('Lose');
+        });
+
+    });
+
 });
-    
