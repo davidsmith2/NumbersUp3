@@ -1,15 +1,13 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Paper from 'material-ui/Paper';
 import {GridList, GridTile} from 'material-ui/GridList';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
-	paper: {
-		float: 'left',
-		width: '680px',
-		padding: '10px'
+	container: {
+		margin: '10px 0'
 	},
 	gridListRoot: {
 		display: 'flex',
@@ -31,8 +29,9 @@ const styles = {
 		transform: 'translateY(-50%)',
 		textAlign: 'center'
 	},
-	gridTileContentFontSize: {
-		fontSize: '34px'
+	raisedButtonRoot: {
+		marginTop: '20px',
+		textAlign: 'center'
 	}
 };
 
@@ -41,19 +40,30 @@ export class Tiles extends React.Component {
         store: React.PropTypes.object.isRequired
     };
 
+    constructor(props, context) {
+    	super(props, context);
+    	this.quit = this.quit.bind(this);
+    }
+
 	render() {
-		const children = [
-			<div key="tiles">
-				<div className="gridListRoot" style={styles.gridListRoot}>
-					<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
-						{this.props.tiles.map(this.renderTile.bind(this))}
-					</GridList>
-				</div>
-			</div>
-		];
 		return (
 			<MuiThemeProvider>
-				<Paper children={children} style={styles.paper} zDepth={1} />
+				<div className="tiles" key="tiles" style={styles.container}>
+					<div className="gridListRoot" style={styles.gridListRoot}>
+						<GridList cellHeight={50} cols={10} padding={0} style={styles.gridList}>
+							{this.props.tiles.map(this.renderTile.bind(this))}
+						</GridList>
+					</div>
+					<div className="raisedButtonRoot" style={styles.raisedButtonRoot}>
+						<RaisedButton
+							label='Quit'
+							secondary={true}
+							keyboardFocused={false}
+							onTouchTap={this.quit}
+							onClick={this.quit}
+						/>
+					</div>
+				</div>
 			</MuiThemeProvider>
 		);
 	}
@@ -72,13 +82,13 @@ export class Tiles extends React.Component {
 	}
 
 	renderUnguessedTile(tile) {
-		return (<a className="gridTileContentLink" href="#" onClick={() => this.guess(tile)} ref="guess" style={styles.gridTileContentFontSize}>
+		return (<a className="gridTileContentLink" href="#" onClick={() => this.guess(tile)} ref="guess">
 			{tile.number}
 		</a>);
 	}
 
 	renderGuessedTile(tile) {
-		return (<i className="gridTileContentVisited material-icons" style={styles.gridTileContentFontSize}>
+		return (<i className="gridTileContentVisited material-icons">
 			{getGuessAccuracyIconName(tile.guessAccuracy)}
 		</i>);
 	}
@@ -87,6 +97,12 @@ export class Tiles extends React.Component {
 		this.context.store.dispatch({
 			type: 'GUESS',
 			tile: tile
+		});
+	}
+
+	quit() {
+		this.context.store.dispatch({
+			type: 'QUIT'
 		});
 	}
 

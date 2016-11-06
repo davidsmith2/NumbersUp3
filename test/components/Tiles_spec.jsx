@@ -1,10 +1,15 @@
 import React from 'react';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {Tiles} from '../../src/components/Tiles';
 
 describe('Tiles', () => {
+
+	beforeEach(() => {
+		injectTapEventPlugin();
+	});
 
 	it('renders guessed and unguessed numbers', () => {
 		const mountOptions = {

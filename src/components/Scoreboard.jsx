@@ -1,16 +1,20 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Paper from 'material-ui/Paper';
-import Badge from 'material-ui/Badge';
+import {
+	Table, 
+	TableBody, 
+	TableHeader, 
+	TableHeaderColumn, 
+	TableRow, 
+	TableRowColumn
+} from 'material-ui/Table';
 import {wrap} from 'lodash';
 
 import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
-	paper: {
-		float: 'right', 
-		width: '240px',
-		padding: '10px'
+	container: {
+		margin: '10px 0'
 	}
 };
 
@@ -55,15 +59,35 @@ export class Scoreboard extends React.Component {
 	];
 
 	render() {
-		const children = [
-			<div className="scoreboard" key="scoreboard">
-				{this.badges.map(this.renderBadge.bind(this))}
-			</div>
-		];
 		return (
 			<MuiThemeProvider>
-				<Paper children={children} style={styles.paper} zDepth={1} />
+				<div className="scoreboard" key="scoreboard" style={styles.container}>
+					<Table>
+						<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+							<TableRow>
+								{this.badges.map(this.renderTableHeaderColumn.bind(this))}
+							</TableRow>
+						</TableHeader>
+						<TableBody displayRowCheckbox={false}>
+							<TableRow>
+								{this.badges.map(this.renderTableRowColumn.bind(this))}
+							</TableRow>
+						</TableBody>
+					</Table>
+				</div>
 			</MuiThemeProvider>
+		);
+	}
+
+	renderTableHeaderColumn(config, index) {
+		return (
+			<TableHeaderColumn key={'thc' + index} style={{textAlign: 'center'}}>{config.rootContent}</TableHeaderColumn>
+		);
+	}
+
+	renderTableRowColumn(config, index) {
+		return (
+			<TableRowColumn key={'trc' + index} style={{textAlign: 'center'}}>{this.getBadgeContent(config.badgeContent)}</TableRowColumn>
 		);
 	}
 

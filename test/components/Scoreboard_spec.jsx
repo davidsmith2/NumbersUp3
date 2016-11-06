@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {
 	renderIntoDocument,
-	scryRenderedDOMComponentsWithClass
+	scryRenderedDOMComponentsWithTag
 } from 'react-addons-test-utils';
 import {expect} from 'chai';
 
@@ -16,7 +16,7 @@ describe('Scoreboard', () => {
 			guessesMade: 1
 		};
 		const component = renderIntoDocument(<Scoreboard game={state} />);
-		const sections = scryRenderedDOMComponentsWithClass(component, 'scoreboardSection');
+		const sections = scryRenderedDOMComponentsWithTag(component, 'th');
 		expect(sections.length).to.equal(5);
 	});
 
