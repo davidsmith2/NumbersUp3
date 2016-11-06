@@ -1,4 +1,4 @@
-import {extend} from 'lodash';
+import {extend, flow, omit} from 'lodash';
 import 'babel-polyfill';
 
 const DEFAULT_TILES = 25;
@@ -33,61 +33,79 @@ export const RESULT_DIALOG_DESCRIPTION = (secretNumber) => `The secret number wa
 export const RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
 export const RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
 
-function getGuessAccuracy(currentGuess) {
-	if (currentGuess < this.secretNumber) {
-		return LOW_GUESS_DESCRIPTOR;
-	}
-	if (currentGuess > this.secretNumber) {
-		return HIGH_GUESS_DESCRIPTOR;
-	}
-	return CORRECT_GUESS_DESCRIPTOR;
+function getCurrentGuess(options) {
+	options.currentGuess = options.tile.number;
+	return options;
 }
 
-function getGuessesMade() {
-	return this.guessesMade + 1;
+function getGuessAccuracy(options) {
+	let guessAccuracy;
+	if (options.currentGuess < this.secretNumber) {
+		guessAccuracy = LOW_GUESS_DESCRIPTOR;
+	} else if (options.currentGuess > this.secretNumber) {
+		guessAccuracy = HIGH_GUESS_DESCRIPTOR;
+	} else {
+		guessAccuracy = CORRECT_GUESS_DESCRIPTOR;
+	}
+	options.guessAccuracy = guessAccuracy;
+	return options;
 }
 
-function getGuesses(currentGuess, guessAccuracy) {
+function getGuessesMade(options) {
+	options.guessesMade = this.guessesMade + 1;
+	return options;
+}
+
+function getGuesses(options) {
 	this.guesses.push({
-		number: currentGuess,
-		guessAccuracy: guessAccuracy
+		number: options.currentGuess,
+		guessAccuracy: options.guessAccuracy
 	});
-	return this.guesses;
+	options.guesses = this.guesses;
+	return options;
 }
 
-function getResult(guessAccuracy, guessesMade) {
+function getResult(options) {
 	let result = false;
 	let dialog = false;
-	if (guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
+	if (options.guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
 		result = WIN_DESCRIPTOR;
 		dialog = RESULT_DIALOG_NAME;
-	} else if (guessesMade === this.guessesAllowed) {
+	} else if (options.guessesMade === this.guessesAllowed) {
 		result = LOSE_DESCRIPTOR;
 		dialog = RESULT_DIALOG_NAME;
 	}
-	return {
-		result: result,
-		dialog: dialog
-	};
+	options.result = result;
+	options.dialog = dialog;
+	return options;
 }
 
 function getTiles(options) {
-	function generateTiles(numTiles) {
-		return Array.from(Array(numTiles)).map((e,i) => {
-			return {number: i + 1, guessAccuracy: false};
+	function createTiles(numTiles) {
+		return Array.from(Array(numTiles)).map((tile, index) => {
+			return {number: index + 1, guessAccuracy: false};
 		});
 	}
-	let thisTile;
+	function updateTiles(tiles) {
+		return tiles.map((tile, index) => {
+			if (tile.number === this.tile.number) {
+				tile.guessAccuracy = this.guessAccuracy;
+			}
+			return tile;
+		}, this);
+	}
+	// create tiles from default number
 	if (!options) {
-		return generateTiles(DEFAULT_TILES);
+		return createTiles(DEFAULT_TILES);
 	}
+	// create tiles from specific number
 	if (options.tiles) {
-		return generateTiles(options.tiles);
+		return createTiles(options.tiles);
 	}
+	// update tiles after a guess has been made
 	if (options.tile && options.guessAccuracy) {
-		thisTile = this.tiles.find((obj) => obj.number === options.tile.number);
-		thisTile.guessAccuracy = options.guessAccuracy;
-		return this.tiles;
+		options.tiles = updateTiles.call(options, this.tiles);
+		return options;
 	}
 }
 
@@ -158,22 +176,15 @@ export function cancelSettings() {
 }
 
 export function guess(state, tile) {
-	const currentGuess = tile.number;
-	const guessAccuracy = getGuessAccuracy.call(state, currentGuess);
-	const guessesMade = getGuessesMade.call(state);
-	const guesses = getGuesses.call(state, currentGuess, guessAccuracy);
-	const result = getResult.call(state, guessAccuracy, guessesMade);
-	const tiles = getTiles.call(state, {
-		guessAccuracy: guessAccuracy,
-		tile: tile
-	});
-	return extend({}, {
-		currentGuess: currentGuess,
-		guessAccuracy: guessAccuracy,
-		guessesMade: guessesMade,
-		guesses: guesses,
-		tiles: tiles
-	}, result);
+	const deriveNextState = flow([
+		getCurrentGuess,
+		getGuessAccuracy,
+		getGuessesMade,
+		getGuesses,
+		getResult,
+		getTiles
+	]);
+	return omit(deriveNextState.call(state, {tile: tile}), 'tile');
 }
 
 export function replay(state) {
