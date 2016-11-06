@@ -1,14 +1,15 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
 import {GridList, GridTile} from 'material-ui/GridList';
 
 import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
-	container: {
-		float: 'left', 
-		width: '680px', 
-		marginRight: '20px'
+	paper: {
+		float: 'left',
+		width: '680px',
+		padding: '10px'
 	},
 	gridListRoot: {
 		display: 'flex',
@@ -41,15 +42,18 @@ export class Tiles extends React.Component {
     };
 
 	render() {
+		const children = [
+			<div key="tiles">
+				<div className="gridListRoot" style={styles.gridListRoot}>
+					<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
+						{this.props.tiles.map(this.renderTile.bind(this))}
+					</GridList>
+				</div>
+			</div>
+		];
 		return (
 			<MuiThemeProvider>
-				<div style={styles.container}>
-					<div className="gridListRoot" style={styles.gridListRoot}>
-						<GridList cellHeight={68} cols={10} padding={0} style={styles.gridList}>
-							{this.props.tiles.map(this.renderTile.bind(this))}
-						</GridList>
-					</div>
-				</div>
+				<Paper children={children} style={styles.paper} zDepth={1} />
 			</MuiThemeProvider>
 		);
 	}

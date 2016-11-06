@@ -1,14 +1,17 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
 import Badge from 'material-ui/Badge';
 import {wrap} from 'lodash';
 
 import {getGuessAccuracyIconName} from '../core';
 
 const styles = {
-	float: 'right', 
-	width: '200px', 
-	marginRight: '20px'
+	paper: {
+		float: 'right', 
+		width: '240px',
+		padding: '10px'
+	}
 };
 
 const getCurrentGuessBadgeContent = (game) => {
@@ -52,11 +55,14 @@ export class Scoreboard extends React.Component {
 	];
 
 	render() {
+		const children = [
+			<div className="scoreboard" key="scoreboard">
+				{this.badges.map(this.renderBadge.bind(this))}
+			</div>
+		];
 		return (
 			<MuiThemeProvider>
-				<div className="scoreboard" style={styles}>
-					{this.badges.map(this.renderBadge.bind(this))}
-				</div>
+				<Paper children={children} style={styles.paper} zDepth={1} />
 			</MuiThemeProvider>
 		);
 	}
