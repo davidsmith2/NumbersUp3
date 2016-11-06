@@ -31232,63 +31232,81 @@
 	var RESULT_DIALOG_REPLAY_BUTTON_LABEL = exports.RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
 	var RESULT_DIALOG_QUIT_BUTTON_LABEL = exports.RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
 
-	function getGuessAccuracy(currentGuess) {
-		if (currentGuess < this.secretNumber) {
-			return LOW_GUESS_DESCRIPTOR;
-		}
-		if (currentGuess > this.secretNumber) {
-			return HIGH_GUESS_DESCRIPTOR;
-		}
-		return CORRECT_GUESS_DESCRIPTOR;
+	function getCurrentGuess(options) {
+		options.currentGuess = options.tile.number;
+		return options;
 	}
 
-	function getGuessesMade() {
-		return this.guessesMade + 1;
+	function getGuessAccuracy(options) {
+		var guessAccuracy = void 0;
+		if (options.currentGuess < this.secretNumber) {
+			guessAccuracy = LOW_GUESS_DESCRIPTOR;
+		} else if (options.currentGuess > this.secretNumber) {
+			guessAccuracy = HIGH_GUESS_DESCRIPTOR;
+		} else {
+			guessAccuracy = CORRECT_GUESS_DESCRIPTOR;
+		}
+		options.guessAccuracy = guessAccuracy;
+		return options;
 	}
 
-	function getGuesses(currentGuess, guessAccuracy) {
+	function getGuessesMade(options) {
+		options.guessesMade = this.guessesMade + 1;
+		return options;
+	}
+
+	function getGuesses(options) {
 		this.guesses.push({
-			number: currentGuess,
-			guessAccuracy: guessAccuracy
+			number: options.currentGuess,
+			guessAccuracy: options.guessAccuracy
 		});
-		return this.guesses;
+		options.guesses = this.guesses;
+		return options;
 	}
 
-	function getResult(guessAccuracy, guessesMade) {
+	function getResult(options) {
 		var result = false;
 		var dialog = false;
-		if (guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
+		if (options.guessAccuracy === CORRECT_GUESS_DESCRIPTOR) {
 			result = WIN_DESCRIPTOR;
 			dialog = RESULT_DIALOG_NAME;
-		} else if (guessesMade === this.guessesAllowed) {
+		} else if (options.guessesMade === this.guessesAllowed) {
 			result = LOSE_DESCRIPTOR;
 			dialog = RESULT_DIALOG_NAME;
 		}
-		return {
-			result: result,
-			dialog: dialog
-		};
+		options.result = result;
+		options.dialog = dialog;
+		return options;
 	}
 
 	function getTiles(options) {
-		function generateTiles(numTiles) {
-			return Array.from(Array(numTiles)).map(function (e, i) {
-				return { number: i + 1, guessAccuracy: false };
+		function createTiles(numTiles) {
+			return Array.from(Array(numTiles)).map(function (tile, index) {
+				return { number: index + 1, guessAccuracy: false };
 			});
 		}
-		var thisTile = void 0;
+		function updateTiles(tiles) {
+			var _this = this;
+
+			return tiles.map(function (tile, index) {
+				if (tile.number === _this.tile.number) {
+					tile.guessAccuracy = _this.guessAccuracy;
+				}
+				return tile;
+			}, this);
+		}
+		// create tiles from default number
 		if (!options) {
-			return generateTiles(DEFAULT_TILES);
+			return createTiles(DEFAULT_TILES);
 		}
+		// create tiles from specific number
 		if (options.tiles) {
-			return generateTiles(options.tiles);
+			return createTiles(options.tiles);
 		}
+		// update tiles after a guess has been made
 		if (options.tile && options.guessAccuracy) {
-			thisTile = this.tiles.find(function (obj) {
-				return obj.number === options.tile.number;
-			});
-			thisTile.guessAccuracy = options.guessAccuracy;
-			return this.tiles;
+			options.tiles = updateTiles.call(options, this.tiles);
+			return options;
 		}
 	}
 
@@ -31361,22 +31379,8 @@
 	}
 
 	function guess(state, tile) {
-		var currentGuess = tile.number;
-		var guessAccuracy = getGuessAccuracy.call(state, currentGuess);
-		var guessesMade = getGuessesMade.call(state);
-		var guesses = getGuesses.call(state, currentGuess, guessAccuracy);
-		var result = getResult.call(state, guessAccuracy, guessesMade);
-		var tiles = getTiles.call(state, {
-			guessAccuracy: guessAccuracy,
-			tile: tile
-		});
-		return (0, _lodash.extend)({}, {
-			currentGuess: currentGuess,
-			guessAccuracy: guessAccuracy,
-			guessesMade: guessesMade,
-			guesses: guesses,
-			tiles: tiles
-		}, result);
+		var deriveNextState = (0, _lodash.flow)([getCurrentGuess, getGuessAccuracy, getGuessesMade, getGuesses, getResult, getTiles]);
+		return (0, _lodash.omit)(deriveNextState.call(state, { tile: tile }), 'tile');
 	}
 
 	function replay(state) {
