@@ -69,7 +69,7 @@ export class Scoreboard extends React.Component {
 							</TableRow>
 						</TableHeader>
 						<TableBody displayRowCheckbox={false}>
-							<TableRow>
+							<TableRow selectable={false}>
 								{this.badges.map(this.renderTableRowColumn.bind(this))}
 							</TableRow>
 						</TableBody>
