@@ -50,7 +50,9 @@ export class Settings extends React.Component {
 					title={SETTINGS_DIALOG_TITLE}
 					actions={actions}
 					modal={false}
-					open={this.props.open}>
+					open={this.props.open}
+					autoScrollBodyContent={true}
+				>
 					<Subheader inset={false}>Guesses allowed
 						<RadioButtonGroup 
 							name="guessesAllowed" 

@@ -56837,7 +56837,7 @@
 								{ displayRowCheckbox: false },
 								_react2.default.createElement(
 									_Table.TableRow,
-									null,
+									{ selectable: false },
 									this.badges.map(this.renderTableRowColumn.bind(this))
 								)
 							)
@@ -66077,7 +66077,9 @@
 							title: _core.SETTINGS_DIALOG_TITLE,
 							actions: actions,
 							modal: false,
-							open: this.props.open },
+							open: this.props.open,
+							autoScrollBodyContent: true
+						},
 						_react2.default.createElement(
 							_Subheader2.default,
 							{ inset: false },
