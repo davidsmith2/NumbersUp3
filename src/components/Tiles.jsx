@@ -2,6 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {GridList, GridTile} from 'material-ui/GridList';
 import RaisedButton from 'material-ui/RaisedButton';
+import {bindAll, partial} from 'lodash';
 
 import {getGuessAccuracyIconName} from '../core';
 
@@ -42,7 +43,7 @@ export class Tiles extends React.Component {
 
     constructor(props, context) {
     	super(props, context);
-    	this.quit = this.quit.bind(this);
+    	bindAll(this, ['guess', 'quit']);
     }
 
 	render() {
@@ -82,7 +83,7 @@ export class Tiles extends React.Component {
 	}
 
 	renderUnguessedTile(tile) {
-		return (<a className="gridTileContentLink" href="#" onClick={() => this.guess(tile)} ref="guess">
+		return (<a className="gridTileContentLink" href="#" onClick={partial(this.guess, tile)} ref="guess">
 			{tile.number}
 		</a>);
 	}
@@ -93,7 +94,8 @@ export class Tiles extends React.Component {
 		</i>);
 	}
 
-	guess(tile) {
+	guess(tile, event) {
+		event.preventDefault();
 		this.context.store.dispatch({
 			type: 'GUESS',
 			tile: tile

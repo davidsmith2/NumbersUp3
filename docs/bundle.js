@@ -62674,6 +62674,8 @@
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
+	var _lodash = __webpack_require__(501);
+
 	var _core = __webpack_require__(500);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -62722,7 +62724,7 @@
 
 			var _this = _possibleConstructorReturn(this, (Tiles.__proto__ || Object.getPrototypeOf(Tiles)).call(this, props, context));
 
-			_this.quit = _this.quit.bind(_this);
+			(0, _lodash.bindAll)(_this, ['guess', 'quit']);
 			return _this;
 		}
 
@@ -62777,13 +62779,9 @@
 		}, {
 			key: 'renderUnguessedTile',
 			value: function renderUnguessedTile(tile) {
-				var _this2 = this;
-
 				return _react2.default.createElement(
 					'a',
-					{ className: 'gridTileContentLink', href: '#', onClick: function onClick() {
-							return _this2.guess(tile);
-						}, ref: 'guess' },
+					{ className: 'gridTileContentLink', href: '#', onClick: (0, _lodash.partial)(this.guess, tile), ref: 'guess' },
 					tile.number
 				);
 			}
@@ -62798,7 +62796,8 @@
 			}
 		}, {
 			key: 'guess',
-			value: function guess(tile) {
+			value: function guess(tile, event) {
+				event.preventDefault();
 				this.context.store.dispatch({
 					type: 'GUESS',
 					tile: tile
