@@ -1,4 +1,5 @@
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {pick, isEqual} from 'lodash';
 
@@ -7,11 +8,22 @@ import {Login} from './Login';
 import {Splash} from './Splash';
 import {Settings} from './Settings';
 import {Result} from './Result';
+import {muiTheme} from '../muiTheme';
 
 export class App extends React.Component {
+    static childContextTypes = {
+        muiTheme: React.PropTypes.object
+    };
+
     constructor(props) {
     	super(props);
 		injectTapEventPlugin();
+    }
+
+    getChildContext() {
+    	return {
+    		muiTheme: muiTheme
+    	};
     }
 
 	render() {

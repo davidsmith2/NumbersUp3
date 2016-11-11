@@ -1,5 +1,6 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
+import {lightBlueA700} from 'material-ui/styles/colors';
 
 import {
 	RESULT_DIALOG_DESCRIPTION,
@@ -16,7 +17,7 @@ export const ResultDescription = (props) => {
 	if (props.saving) {
 		els.push(
 			<div key="result-description-loading" style={{marginBottom: '2em'}}>
-				<CircularProgress size={20} style={{marginRight: '0.5em'}}/>
+				<CircularProgress color={lightBlueA700} size={20} style={{marginRight: '0.5em'}}/>
 				{RESULT_DIALOG_PROGRESS_LABEL}
 			</div>
 		);

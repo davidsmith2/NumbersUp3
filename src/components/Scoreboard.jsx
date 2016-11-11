@@ -1,5 +1,4 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {
 	Table, 
 	TableBody, 
@@ -8,104 +7,71 @@ import {
 	TableRow, 
 	TableRowColumn
 } from 'material-ui/Table';
-import {wrap} from 'lodash';
 
-import {getGuessAccuracyIconName} from '../core';
-
-const styles = {
-	container: {
-		margin: '10px 0'
-	}
-};
-
-const getCurrentGuessBadgeContent = (game) => {
-	return game.currentGuess || '-';
-
-};
-
-const getGuessAccuracyBadgeContent = (func, game) => {
-	if (!game.guessAccuracy) {
-		return '-';
-	}
-	return (<i className="material-icons">{func(game.guessAccuracy)}</i>);
-};
-
-const getGuessesRemainingBadgeContent = (game) => {
-	return game.guessesAllowed - game.guessesMade;
-};
+import {badges} from '../core';
+import {styles} from '../styles';
 
 export class Scoreboard extends React.Component {
-	badges = [
-		{
-			rootContent: 'Current',
-			badgeContent: getCurrentGuessBadgeContent
-		},
-		{
-			rootContent: 'Accuracy',
-			badgeContent: wrap(getGuessAccuracyIconName, getGuessAccuracyBadgeContent)
-		},
-		{
-			rootContent: 'Allowed',
-			badgeContent: 'guessesAllowed'
-		},
-		{
-			rootContent: 'Made',
-			badgeContent: 'guessesMade'
-		},
-		{
-			rootContent: 'Remaining',
-			badgeContent: getGuessesRemainingBadgeContent
-		}
-	];
+    static contextTypes = {
+        store: React.PropTypes.object.isRequired,
+        muiTheme: React.PropTypes.object
+    };
 
 	render() {
 		return (
-			<MuiThemeProvider>
-				<div className="scoreboard" key="scoreboard" style={styles.container}>
-					<Table>
-						<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-							<TableRow>
-								{this.badges.map(this.renderTableHeaderColumn.bind(this))}
-							</TableRow>
-						</TableHeader>
-						<TableBody displayRowCheckbox={false}>
-							<TableRow selectable={false}>
-								{this.badges.map(this.renderTableRowColumn.bind(this))}
-							</TableRow>
-						</TableBody>
-					</Table>
-				</div>
-			</MuiThemeProvider>
+			<div className="scoreboard" key="scoreboard" style={styles.scoreboard.container}>
+				<Table>
+					<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+						<TableRow>
+							{badges.map(this.renderTableHeaderColumn.bind(this))}
+						</TableRow>
+					</TableHeader>
+					<TableBody displayRowCheckbox={false}>
+						<TableRow selectable={false} style={styles.scoreboard.tableRow}>
+							{badges.map(this.renderTableRowColumn.bind(this))}
+						</TableRow>
+					</TableBody>
+				</Table>
+			</div>
 		);
 	}
 
 	renderTableHeaderColumn(config, index) {
 		return (
-			<TableHeaderColumn key={'thc' + index} style={{textAlign: 'center'}}>{config.rootContent}</TableHeaderColumn>
+			<TableHeaderColumn 
+				key={'thc' + index}
+				style={styles.scoreboard.tableHeaderColumn}
+			>
+				{config.rootContent}
+			</TableHeaderColumn>
 		);
 	}
 
 	renderTableRowColumn(config, index) {
+		let badgeContent = this.getBadgeContent(config.badgeContent);
+		if (!Number.isInteger(badgeContent)) {
+			badgeContent = this.getIcon(badgeContent);
+		}
 		return (
-			<TableRowColumn key={'trc' + index} style={{textAlign: 'center'}}>{this.getBadgeContent(config.badgeContent)}</TableRowColumn>
+			<TableRowColumn 
+				key={'trc' + index}
+				style={styles.scoreboard.tableRowColumn}
+			>
+				{badgeContent}
+			</TableRowColumn>
 		);
 	}
 
 	renderBadge(config) {
-		const styles = {
-			root: {
-				display: 'block', 
-				paddingLeft: '3em'
-			},
-			badge: {
-				width: '42px',
-				height: '42px',
-				left: 0,
-				top: '1em'
-			}
-		};
 		return (
-			<Badge badgeContent={this.getBadgeContent(config.badgeContent)} badgeStyle={styles.badge} className="scoreboardSection" key={config.rootContent} primary={true} style={styles.root}>
+			<Badge 
+				badgeContent={this.getBadgeContent(config.badgeContent)} 
+				badgeStyle={styles.badge.badge} 
+				className="scoreboardSection" 
+				key={config.rootContent} 
+				primary={true} 
+				style={styles.badge.root}
+			>
 				{config.rootContent}
 			</Badge>
 		);
@@ -119,6 +85,14 @@ export class Scoreboard extends React.Component {
 			return config(this.props.game);
 		}
 
+	}
+
+	getIcon(badgeContent) {
+		return (
+			<i className="material-icons">
+				{badgeContent}
+			</i>
+		);
 	}
 
 }

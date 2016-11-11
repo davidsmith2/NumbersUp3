@@ -1,9 +1,20 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+	green900,
+	yellowA700,
+	grey300,
+	grey900
+} from 'material-ui/styles/colors';
 
 import {
+	BUTTON_CLASSNAME,
+	DIALOG_CLASSNAME,
+	DIALOG_CONTENT_CLASSNAME,
+	DIALOG_TITLE_CLASSNAME,
+	DIALOG_BODY_CLASSNAME,
+	DIALOG_ACTIONS_CONTAINER_CLASSNAME,
 	SPLASH_DIALOG_TITLE,
 	SPLASH_DIALOG_DESCRIPTION,
 	SPLASH_DIALOG_PLAY_BUTTON_LABEL,
@@ -12,7 +23,8 @@ import {
 
 export class Splash extends React.Component {
     static contextTypes = {
-        store: React.PropTypes.object.isRequired
+        store: React.PropTypes.object.isRequired,
+        muiTheme: React.PropTypes.object
     };
 
     constructor(props, context) {
@@ -23,29 +35,39 @@ export class Splash extends React.Component {
 
 	render() {
 		const actions = [
-			<FlatButton
+			<RaisedButton
 				label={SPLASH_DIALOG_PLAY_BUTTON_LABEL}
-				primary={true}
 				keyboardFocused={true}
 				onTouchTap={this.play}
-				onClick={this.play} />,
-			<FlatButton
+				onClick={this.play}
+				backgroundColor={green900}
+				className={BUTTON_CLASSNAME}
+				labelColor={grey300}
+			/>,
+			<RaisedButton
 				label={SPLASH_DIALOG_SETTINGS_BUTTON_LABEL}
-				primary={false}
 				keyboardFocused={false}
 				onTouchTap={this.settings}
-				onClick={this.settings} />
+				onClick={this.settings}
+				backgroundColor={yellowA700}
+				className={BUTTON_CLASSNAME}
+				labelColor={grey900}
+			/>
 		];
 		return (
-			<MuiThemeProvider>
-				<Dialog
-					title={SPLASH_DIALOG_TITLE}
-					actions={actions}
-					modal={false}
-					open={this.props.open}>
-					<p>{SPLASH_DIALOG_DESCRIPTION}</p>
-				</Dialog>
-			</MuiThemeProvider>
+			<Dialog
+				title={SPLASH_DIALOG_TITLE}
+				actions={actions}
+				modal={false}
+				open={this.props.open}
+				className={DIALOG_CLASSNAME}
+				contentClassName={DIALOG_CONTENT_CLASSNAME}
+				titleClassName={DIALOG_TITLE_CLASSNAME}
+				bodyClassName={DIALOG_BODY_CLASSNAME}
+				actionsContainerClassName={DIALOG_ACTIONS_CONTAINER_CLASSNAME}
+			>
+				<p>{SPLASH_DIALOG_DESCRIPTION}</p>
+			</Dialog>
 		);
 
 	}

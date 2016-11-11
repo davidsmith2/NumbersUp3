@@ -1,10 +1,20 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+	green900,
+	red900,
+	grey300
+} from 'material-ui/styles/colors';
 
 import {ResultDescription} from './ResultDescription';
 import {
+	BUTTON_CLASSNAME,
+	DIALOG_CLASSNAME,
+	DIALOG_CONTENT_CLASSNAME,
+	DIALOG_TITLE_CLASSNAME,
+	DIALOG_BODY_CLASSNAME,
+	DIALOG_ACTIONS_CONTAINER_CLASSNAME,
 	RESULT_DIALOG_TITLE,
 	RESULT_DIALOG_REPLAY_BUTTON_LABEL,
 	RESULT_DIALOG_QUIT_BUTTON_LABEL,
@@ -24,30 +34,39 @@ export class Result extends React.Component {
 
 	render() {
 		const actions = [
-			<FlatButton
+			<RaisedButton
 				label={RESULT_DIALOG_REPLAY_BUTTON_LABEL}
-				primary={true}
 				keyboardFocused={true}
 				onTouchTap={this.replay}
-				onClick={this.replay} />,
-			<FlatButton
+				onClick={this.replay}
+				backgroundColor={green900}
+				className={BUTTON_CLASSNAME}
+				labelColor={grey300}
+			/>,
+			<RaisedButton
 				label={RESULT_DIALOG_QUIT_BUTTON_LABEL}
-				primary={false}
 				keyboardFocused={false}
 				onTouchTap={this.quit}
-				onClick={this.quit} />
+				onClick={this.quit}
+				backgroundColor={red900}
+				className={BUTTON_CLASSNAME}
+				labelColor={grey300}
+			/>
 		];
 		return (
-			<MuiThemeProvider>
-				<Dialog
-					title={RESULT_DIALOG_TITLE(this.props.result)}
-					actions={actions}
-					modal={false}
-					open={this.props.open}
-				>
-					<ResultDescription saving={this.props.saving} secretNumber={this.props.secretNumber} />
-				</Dialog>
-			</MuiThemeProvider>
+			<Dialog
+				title={RESULT_DIALOG_TITLE(this.props.result)}
+				actions={actions}
+				modal={false}
+				open={this.props.open}
+				className={DIALOG_CLASSNAME}
+				contentClassName={DIALOG_CONTENT_CLASSNAME}
+				titleClassName={DIALOG_TITLE_CLASSNAME}
+				bodyClassName={DIALOG_BODY_CLASSNAME + ' text-center'}
+				actionsContainerClassName={DIALOG_ACTIONS_CONTAINER_CLASSNAME}
+			>
+				<ResultDescription secretNumber={this.props.secretNumber} saving={this.props.saving} />
+			</Dialog>
 		);
 	}
 

@@ -1,8 +1,11 @@
-import {extend, flow, omit, isUndefined} from 'lodash';
 import 'babel-polyfill';
+import {
+	extend, 
+	flow, 
+	omit, 
+	wrap
+} from 'lodash';
 import 'whatwg-fetch';
-
-const API_URL_ROOT = (!PRODUCTION) ? 'http://localhost:4711' : 'https://numbers-up-server.herokuapp.com';
 
 const DEFAULT_TILES = 25;
 const DEFAULT_GUESSES_ALLOWED = 13;
@@ -22,8 +25,27 @@ const SPLASH_DIALOG_NAME = 'splash';
 const SETTINGS_DIALOG_NAME = 'settings';
 const RESULT_DIALOG_NAME = 'result';
 
+const CURRENT_GUESS_LABEL_CONTENT = 'Current';
+const GUESS_ACCURACY_LABEL_CONTENT = 'Accuracy';
+const GUESSES_ALLOWED_LABEL_CONTENT = 'Allowed';
+const GUESSES_MADE_LABEL_CONTENT = 'Made';
+const GUESSES_REMAINING_LABEL_CONTENT = 'Remaining';
+
+export const DIALOG_CLASSNAME = 'dialog';
+export const DIALOG_CONTENT_CLASSNAME = 'dialog__content';
+export const DIALOG_TITLE_CLASSNAME = 'dialog__title';
+export const DIALOG_BODY_CLASSNAME = 'dialog__body';
+export const DIALOG_ACTIONS_CONTAINER_CLASSNAME = 'dialog__actions-container';
+
+export const BUTTON_CLASSNAME = 'button';
+
+export const LOGIN_DIALOG_TITLE = 'Login';
+export const LOGIN_DIALOG_LOGIN_BUTTON_LABEL = 'Login';
+export const LOGIN_DIALOG_TEXT_FIELD_HINT_TEXT = 'Your name';
+export const LOGIN_DIALOG_TEXT_FIELD_ERROR_TEXT = 'This field is required';
+
 export const SPLASH_DIALOG_TITLE = 'Numbers Up';
-export const SPLASH_DIALOG_DESCRIPTION = 'Try to guess the secret number before you run out of turns.';
+export const SPLASH_DIALOG_DESCRIPTION = 'Guess the secret number before you run out of guesses.';
 export const SPLASH_DIALOG_PLAY_BUTTON_LABEL = 'Play';
 export const SPLASH_DIALOG_SETTINGS_BUTTON_LABEL = 'Settings';
 
@@ -36,6 +58,8 @@ export const RESULT_DIALOG_DESCRIPTION = (secretNumber) => `The secret number wa
 export const RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
 export const RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
 export const RESULT_DIALOG_PROGRESS_LABEL = 'Saving game...';
+
+export const QUIT_BUTTON_LABEL = 'Quit';
 
 function getCurrentGuess(options) {
 	options.currentGuess = options.tile.number;
@@ -126,7 +150,22 @@ function handleResultDialogAction(state) {
 	});
 }
 
-export function getGuessAccuracyIconName(guessAccuracy) {
+const getCurrentGuessBadgeContent = (game) => {
+	return game.currentGuess || '-';
+};
+
+const getGuessAccuracyBadgeContent = (func, game) => {
+	if (!game.guessAccuracy) {
+		return '-';
+	}
+	return func(game.guessAccuracy);
+};
+
+const getGuessesRemainingBadgeContent = (game) => {
+	return game.guessesAllowed - game.guessesMade;
+};
+
+export const getGuessAccuracyIconName = (guessAccuracy) => {
 	switch(guessAccuracy) {
 		case LOW_GUESS_DESCRIPTOR:
 			return LOW_GUESS_ICON_NAME;
@@ -135,7 +174,30 @@ export function getGuessAccuracyIconName(guessAccuracy) {
 		case CORRECT_GUESS_DESCRIPTOR:
 			return CORRECT_GUESS_ICON_NAME;
 	}
-}
+};
+
+export const badges = [
+	{
+		rootContent: CURRENT_GUESS_LABEL_CONTENT,
+		badgeContent: getCurrentGuessBadgeContent
+	},
+	{
+		rootContent: GUESS_ACCURACY_LABEL_CONTENT,
+		badgeContent: wrap(getGuessAccuracyIconName, getGuessAccuracyBadgeContent)
+	},
+	{
+		rootContent: GUESSES_ALLOWED_LABEL_CONTENT,
+		badgeContent: 'guessesAllowed'
+	},
+	{
+		rootContent: GUESSES_MADE_LABEL_CONTENT,
+		badgeContent: 'guessesMade'
+	},
+	{
+		rootContent: GUESSES_REMAINING_LABEL_CONTENT,
+		badgeContent: getGuessesRemainingBadgeContent
+	}
+];
 
 export function getInitialState() {
 	return 	{

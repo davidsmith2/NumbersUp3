@@ -29,7 +29,7 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.DefinePlugin({
-		    PRODUCTION: JSON.stringify(false)
+		    API_URL_ROOT: 'http://localhost:4711'
 		})
 	],
 	devtool: 'source-map',

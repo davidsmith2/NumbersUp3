@@ -1,71 +1,44 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {GridList, GridTile} from 'material-ui/GridList';
-import RaisedButton from 'material-ui/RaisedButton';
-import {bindAll, partial} from 'lodash';
+import {
+	green900,
+	grey300
+} from 'material-ui/styles/colors';
+import {
+	bindAll, 
+	extend,
+	partial
+} from 'lodash';
 
 import {getGuessAccuracyIconName} from '../core';
+import {styles} from '../styles';
 
-const styles = {
-	container: {
-		margin: '10px 0'
-	},
-	gridListRoot: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		justifyContent: 'space-around'
-	},
-	gridList: {
-		width: '100%',
-		height: '100%',
-		overflowY: 'hidden'
-	},
-	gridTile: {
-		backgroundColor: '#eee',
-		border: '1px solid #ddd'
-	},
-	gridTileContent: {
-		position: 'relative',
-		top: '50%',
-		transform: 'translateY(-50%)',
-		textAlign: 'center'
-	},
-	raisedButtonRoot: {
-		marginTop: '20px',
-		textAlign: 'center'
-	}
-};
+function getCellHeight() {
+	let paperWidth = styles.game.paper.width;
+	paperWidth = parseInt(paperWidth.substring(0, paperWidth.length - 2), 10);
+	return (paperWidth / 10) - 4;
+}
 
 export class Tiles extends React.Component {
     static contextTypes = {
-        store: React.PropTypes.object.isRequired
+        store: React.PropTypes.object.isRequired,
+        muiTheme: React.PropTypes.object
     };
 
     constructor(props, context) {
     	super(props, context);
-    	bindAll(this, ['guess', 'quit']);
+    	bindAll(this, ['guess']);
     }
 
 	render() {
 		return (
-			<MuiThemeProvider>
-				<div className="tiles" key="tiles" style={styles.container}>
-					<div className="gridListRoot" style={styles.gridListRoot}>
-						<GridList cellHeight={50} cols={10} padding={0} style={styles.gridList}>
-							{this.props.tiles.map(this.renderTile.bind(this))}
-						</GridList>
-					</div>
-					<div className="raisedButtonRoot" style={styles.raisedButtonRoot}>
-						<RaisedButton
-							label='Quit'
-							secondary={true}
-							keyboardFocused={false}
-							onTouchTap={this.quit}
-							onClick={this.quit}
-						/>
-					</div>
+			<div className="tiles" key="tiles" style={styles.tiles.container}>
+				<div style={styles.tiles.gridListRoot}>
+					<GridList cellHeight={getCellHeight()} cols={10} padding={0} style={styles.tiles.gridList}>
+						{this.props.tiles.map(this.renderTile.bind(this))}
+					</GridList>
 				</div>
-			</MuiThemeProvider>
+			</div>
 		);
 	}
 
@@ -74,8 +47,8 @@ export class Tiles extends React.Component {
 		return (
 			<GridTile
 				key={tile.number} 
-				style={styles.gridTile}>
-				<div className="gridTileContent" style={styles.gridTileContent}>
+				style={styles.tiles.gridTile}>
+				<div className="tile tile-outer">
 					{renderTileContent.call(this, tile)}
 				</div>
 			</GridTile>
@@ -83,13 +56,13 @@ export class Tiles extends React.Component {
 	}
 
 	renderUnguessedTile(tile) {
-		return (<a className="gridTileContentLink" href="#" onClick={partial(this.guess, tile)} ref="guess">
+		return (<a className="tile tile-inner" href="#" onClick={partial(this.guess, tile)} ref="guess">
 			{tile.number}
 		</a>);
 	}
 
 	renderGuessedTile(tile) {
-		return (<i className="gridTileContentVisited material-icons">
+		return (<i className="tile tile-inner visited material-icons">
 			{getGuessAccuracyIconName(tile.guessAccuracy)}
 		</i>);
 	}
@@ -99,12 +72,6 @@ export class Tiles extends React.Component {
 		this.context.store.dispatch({
 			type: 'GUESS',
 			tile: tile
-		});
-	}
-
-	quit() {
-		this.context.store.dispatch({
-			type: 'QUIT'
 		});
 	}
 
