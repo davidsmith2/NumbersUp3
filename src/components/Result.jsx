@@ -7,7 +7,8 @@ import {ResultDescription} from './ResultDescription';
 import {
 	RESULT_DIALOG_TITLE,
 	RESULT_DIALOG_REPLAY_BUTTON_LABEL,
-	RESULT_DIALOG_QUIT_BUTTON_LABEL
+	RESULT_DIALOG_QUIT_BUTTON_LABEL,
+	saveGame
 } from '../core';
 
 export class Result extends React.Component {
@@ -42,11 +43,19 @@ export class Result extends React.Component {
 					title={RESULT_DIALOG_TITLE(this.props.result)}
 					actions={actions}
 					modal={false}
-					open={this.props.open}>
-					<ResultDescription secretNumber={this.props.secretNumber} />
+					open={this.props.open}
+				>
+					<ResultDescription saving={this.props.saving} secretNumber={this.props.secretNumber} />
 				</Dialog>
 			</MuiThemeProvider>
 		);
+	}
+
+	componentWillMount() {
+		this.context.store.dispatch(saveGame({
+			result: this.props.result,
+			secretNumber: this.props.secretNumber
+		}));
 	}
 
 	replay() {

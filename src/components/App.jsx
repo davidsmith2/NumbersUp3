@@ -17,13 +17,13 @@ export class App extends React.Component {
 		let els = [];
 		els.push(<Game key="game" tiles={this.props.tiles} game={this.getGame()} />);
 		if (isEqual(this.props.dialog, 'splash')) {
-			els.push(<Splash key="splash" open={!!this.props.dialog} />)
+			els.push(<Splash key="splash" open={!!this.props.dialog} />);
 		}
 		if (isEqual(this.props.dialog, 'settings')) {
-			els.push(<Settings key="settings" open={!!this.props.dialog} guessesAllowed={this.props.guessesAllowed} tiles={this.props.tiles.length} />)
+			els.push(<Settings key="settings" open={!!this.props.dialog} guessesAllowed={this.props.guessesAllowed} tiles={this.props.tiles.length} />);
 		}
 		if (isEqual(this.props.dialog, 'result')) {
-			els.push(<Result key="result" open={!!this.props.dialog} result={this.props.result} secretNumber={this.props.secretNumber} />)
+			els.push(<Result key="result" open={!!this.props.dialog} result={this.props.result} secretNumber={this.props.secretNumber} saving={this.props.saving} />);
 		}
 		return <div>{els}</div>
 	}

@@ -13,7 +13,8 @@ function mapStateToProps(state) {
 		guessesAllowed: state.guessesAllowed,
 		guessesMade: state.guessesMade,
 		guessesRemaining: state.guessesRemaining,
-		guesses: state.guesses
+		guesses: state.guesses,
+		saving: state.saving
 	};
 }
 

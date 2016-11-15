@@ -1,6 +1,8 @@
 import {extend, flow, omit} from 'lodash';
 import 'babel-polyfill';
 
+const API_URL_ROOT = 'http://localhost:4711/api/games';
+
 const DEFAULT_TILES = 25;
 const DEFAULT_GUESSES_ALLOWED = 13;
 
@@ -32,6 +34,7 @@ export const RESULT_DIALOG_TITLE = (result) => `You ${result}!`;
 export const RESULT_DIALOG_DESCRIPTION = (secretNumber) => `The secret number was ${secretNumber}.`;
 export const RESULT_DIALOG_REPLAY_BUTTON_LABEL = 'Replay';
 export const RESULT_DIALOG_QUIT_BUTTON_LABEL = 'Quit';
+export const RESULT_DIALOG_PROGRESS_LABEL = 'Saving game...';
 
 function getCurrentGuess(options) {
 	options.currentGuess = options.tile.number;
@@ -194,3 +197,20 @@ export function replay(state) {
 export function quit(state) {
 	return handleResultDialogAction(extend(state, {dialog: SPLASH_DIALOG_NAME}));
 }
+
+export function saveGame(data) {
+	return (dispatch) => {
+		dispatch({type: 'SAVE_GAME_BEFORE'});
+		setTimeout(() => {
+			return fetch(API_URL_ROOT, {
+				method: 'post',
+				body: JSON.stringify(data),
+				headers: new Headers({'Content-Type': 'application/json'})
+			}).then((response) => {
+				dispatch({type: 'SAVE_GAME_SUCCESS'});
+			}).catch((error) => {
+				dispatch({type: 'SAVE_GAME_ERROR'});
+			});
+		}, 1000);
+	};
+};

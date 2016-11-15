@@ -29,6 +29,11 @@ export function reducer(state = getInitialState(), action) {
 	    return changeState(state, replay(state));
 	  case 'QUIT':
 	    return changeState(state, quit(state));
+	  case 'SAVE_GAME_BEFORE':
+	    return changeState(state, {saving: true});
+	  case 'SAVE_GAME_SUCCESS':
+	  case 'SAVE_GAME_ERROR':
+	    return changeState(state, {saving: false});
   }
   return state;
 }
