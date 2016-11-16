@@ -53,8 +53,12 @@ export class Result extends React.Component {
 
 	componentWillMount() {
 		this.context.store.dispatch(saveGame({
+			guessesAllowed: this.props.guessesAllowed,
+			guessesMade: this.props.guessesMade,
 			result: this.props.result,
-			secretNumber: this.props.secretNumber
+			secretNumber: this.props.secretNumber,
+			tiles: this.props.tiles,
+			user: this.props.user
 		}));
 	}
 

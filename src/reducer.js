@@ -15,6 +15,8 @@ function changeState(oldState, newState) {
 
 export function reducer(state = getInitialState(), action) {
   switch (action.type) {
+	  case 'LOGIN':
+	    return changeState(state, {user: action.user});
 	  case 'PLAY':
 	    return changeState(state, play());
 	  case 'OPEN_SETTINGS':

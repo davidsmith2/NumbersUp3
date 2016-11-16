@@ -4,6 +4,7 @@ import {App} from './components/App';
 
 function mapStateToProps(state) {
 	return {
+		user: state.user,
 		dialog: state.dialog,
 		secretNumber: state.secretNumber,
 		result: state.result,
