@@ -1,5 +1,6 @@
 import {extend, flow, omit, isUndefined} from 'lodash';
 import 'babel-polyfill';
+import 'whatwg-fetch';
 
 const API_URL_ROOT = (!PRODUCTION) ? 'http://localhost:4711' : 'https://numbers-up-server.herokuapp.com';
 
