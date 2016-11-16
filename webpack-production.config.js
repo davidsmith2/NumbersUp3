@@ -28,6 +28,9 @@ module.exports = {
 	plugins: [
 		new CopyWebpackPlugin([
 			{from: 'dist/index.html'}
-		])
+		]),
+		new webpack.DefinePlugin({
+		    PRODUCTION: JSON.stringify(true)
+		})
 	]
 };

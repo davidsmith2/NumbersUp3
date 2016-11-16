@@ -1,7 +1,7 @@
-import {extend, flow, omit} from 'lodash';
+import {extend, flow, omit, isUndefined} from 'lodash';
 import 'babel-polyfill';
 
-const API_URL_ROOT = 'http://localhost:4711/api/games';
+const API_URL_ROOT = (!PRODUCTION) ? 'http://localhost:4711' : 'https://numbers-up-server.herokuapp.com';
 
 const DEFAULT_TILES = 25;
 const DEFAULT_GUESSES_ALLOWED = 13;
@@ -202,7 +202,7 @@ export function saveGame(data) {
 	return (dispatch) => {
 		dispatch({type: 'SAVE_GAME_BEFORE'});
 		setTimeout(() => {
-			return fetch(API_URL_ROOT, {
+			return fetch(API_URL_ROOT + '/api/games', {
 				method: 'post',
 				body: JSON.stringify(data),
 				headers: new Headers({'Content-Type': 'application/json'})
