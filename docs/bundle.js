@@ -31493,7 +31493,7 @@
 		return function (dispatch) {
 			dispatch({ type: 'SAVE_GAME_BEFORE' });
 			setTimeout(function () {
-				return fetch((https://numbers-up-server.herokuapp.com) + '/api/games', {
+				return fetch(("https://numbers-up-server.herokuapp.com") + '/api/games', {
 					method: 'post',
 					body: JSON.stringify(data),
 					headers: new Headers({ 'Content-Type': 'application/json' })

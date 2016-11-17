@@ -31,7 +31,7 @@ module.exports = {
 			{from: 'dist/index.css'}
 		]),
 		new webpack.DefinePlugin({
-		    API_URL_ROOT: 'https://numbers-up-server.herokuapp.com'
+		    API_URL_ROOT: JSON.stringify('https://numbers-up-server.herokuapp.com')
 		})
 	]
 };
