@@ -27,7 +27,8 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			{from: 'dist/index.html'}
+			{from: 'dist/index.html'},
+			{from: 'dist/index.css'}
 		]),
 		new webpack.DefinePlugin({
 		    API_URL_ROOT: 'https://numbers-up-server.herokuapp.com'
