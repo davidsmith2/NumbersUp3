@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -13,6 +13,16 @@ module.exports = {
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				loaders: ['babel']
+			},
+			{
+				test: /\.css?$/,
+				include: /src/,
+				loaders: ['style', 'css']
+			},
+			{
+				test: /\.pug?$/,
+				include: /src/,
+				loaders: ['pug']
 			}
 		]
 	},
@@ -26,12 +36,13 @@ module.exports = {
 		filename: 'bundle.js'
 	},
 	plugins: [
-		new CopyWebpackPlugin([
-			{from: 'dist/index.html'},
-			{from: 'dist/index.css'}
-		]),
 		new webpack.DefinePlugin({
 		    API_URL_ROOT: JSON.stringify('https://numbers-up-server.herokuapp.com')
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'index.html',
+			template: 'src/index.pug',
+			title: 'Numbers Up'
 		})
 	]
 };

@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -14,6 +15,16 @@ module.exports = {
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				loaders: ['react-hot', 'babel']
+			},
+			{
+				test: /\.css?$/,
+				include: /src/,
+				loaders: ['style', 'css']
+			},
+			{
+				test: /\.pug?$/,
+				include: /src/,
+				loaders: ['pug']
 			}
 		]
 	},
@@ -30,6 +41,11 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.DefinePlugin({
 		    API_URL_ROOT: JSON.stringify('http://localhost:4711')
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'index.html',
+			template: 'src/index.pug',
+			title: 'Numbers Up'
 		})
 	],
 	devtool: 'source-map',

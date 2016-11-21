@@ -9,10 +9,6 @@ var server = new WebpackDevServer(webpack(config), {
 	historyApiFallback: true
 });
 
-server.use('/', function(req, res) {
-	res.sendFile(config.output.path + '/index.html');
-});
-
 server.listen(8080, 'localhost', function (err, result) {
 	if (err) {
 		return console.log(err);
