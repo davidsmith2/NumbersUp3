@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import 'babel-polyfill';
 
-import {reducer} from '../src/reducer';
+import {reducer} from '../app/reducer';
 
 describe('reducer', () => {
 
@@ -44,7 +44,7 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'SAVE_SETTINGS',
-                data: {
+                payload: {
                     guessesAllowed: 10,
                     tiles: 50
                 }
@@ -60,7 +60,7 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'SAVE_SETTINGS',
-                data: {
+                payload: {
                     guessesAllowed: 10,
                     tiles: 50
                 }
@@ -132,7 +132,7 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'GUESS',
-                tile: {number: 2}
+                payload: {number: 2}
             };
             const nextState = reducer(state, action);
             expect(nextState.currentGuess).to.equal(2);
@@ -146,7 +146,7 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'GUESS',
-                tile: {number: 2}
+                payload: {number: 2}
             };
             const nextState = reducer(state, action);
             expect(nextState.guessesMade).to.equal(1);
@@ -159,7 +159,7 @@ describe('reducer', () => {
             };
             const action = {
                 type: 'GUESS',
-                tile: {number: 2}
+                payload: {number: 2}
             };
             const nextState = reducer(state, action);
             expect(!!nextState.guesses.find((obj) => obj.number === 2)).to.equal(true);
@@ -175,7 +175,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 1}
+                    payload: {number: 1}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.result).to.equal('Win');
@@ -191,7 +191,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 2}
+                    payload: {number: 2}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.result).to.equal('Lose');
@@ -207,7 +207,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 2}
+                    payload: {number: 2}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.result).to.equal(false);
@@ -225,7 +225,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 2}
+                    payload: {number: 2}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.guessAccuracy).to.equal('High');
@@ -239,7 +239,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 1}
+                    payload: {number: 1}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.guessAccuracy).to.equal('Low');
@@ -253,7 +253,7 @@ describe('reducer', () => {
                 };
                 const action = {
                     type: 'GUESS',
-                    tile: {number: 2}
+                    payload: {number: 2}
                 };
                 const nextState = reducer(state, action);
                 expect(nextState.guessAccuracy).to.equal('Match');
@@ -268,8 +268,8 @@ describe('reducer', () => {
         it('is won if the player guesses the secret number', () => {
             const actions = [
                 {type: 'PLAY'},
-                {type: 'GUESS', tile: {number: 1}},
-                {type: 'GUESS', tile: {number: 2}}
+                {type: 'GUESS', payload: {number: 1}},
+                {type: 'GUESS', payload: {number: 2}}
             ];
             const finalState = actions.reduce(reducer, {
                 secretNumber: 2,
@@ -288,8 +288,8 @@ describe('reducer', () => {
         it('is lost if the player fails to guess the secret number', () => {
             const actions = [
                 {type: 'PLAY'},
-                {type: 'GUESS', tile: {number: 1}},
-                {type: 'GUESS', tile: {number: 2}}
+                {type: 'GUESS', payload: {number: 1}},
+                {type: 'GUESS', payload: {number: 2}}
             ];
             const finalState = actions.reduce(reducer, {
                 secretNumber: 3,

@@ -1,27 +1,31 @@
 {
-  "name": "numbers-up-3-client",
+  "name": "NumbersUp3",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-dev": "node server.js",
-    "build-prod": "webpack --config webpack-production.config.js --progress --profile --colors",
+    "start": "react-native start",
+    "ios-bundle": "react-native bundle --dev false --entry-file index.ios.js --platform ios --bundle-output ios/index.ios.bundle",
+    "ios-dev-bundle": "react-native bundle --entry-file index.ios.js --platform ios --bundle-output ios/index.ios.bundle",
+    "web-bundle": "webpack --config web/webpack/webpack-production.config.js --progress --profile --colors",
+    "web-dev": "node web/webpack/server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
-    "test:watch": "npm run test -- --watch"
+    "web-test:watch": "npm run test -- --watch"
   },
   "author": "David Smith",
   "license": "ISC",
   "dependencies": {
     "immutable": "^3.8.1",
     "lodash": "^4.16.6",
-    "material-ui": "^0.16.1",
-    "react": "^15.3.2",
+    "material-ui": "^0.16.3",
+    "react": "15.4.1",
     "react-addons-pure-render-mixin": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-native": "0.38.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.0.0",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "whatwg-fetch": "^2.0.0"
@@ -33,6 +37,7 @@
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-react-native": "^1.9.0",
     "babel-preset-stage-0": "^6.16.0",
     "chai": "^3.5.0",
     "chai-immutable": "^1.6.0",
@@ -53,6 +58,7 @@
     "presets": [
       "es2015",
       "react",
+      "react-native",
       "stage-0"
     ]
   }
