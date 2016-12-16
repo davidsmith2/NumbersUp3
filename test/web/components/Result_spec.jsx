@@ -1,9 +1,9 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import Dialog from 'material-ui/Dialog';
 
 import {Result} from '../../../app/web/components/Result';
+import {WebDialog} from '../../../app/web/components/Dialog';
 
 describe('Result', () => {
 	const mountOptions = {
@@ -23,7 +23,7 @@ describe('Result', () => {
 			saveGame: () => {}
 		};
 		const component = shallow(<Result />, mountOptions);
-		expect(component.find(Dialog).node.props.title).to.equal('You Win!');
+		expect(component.find(WebDialog).node.props.title).to.equal('You Win!');
 	});
 
 	it('tells the user if they\'ve lost', () => {
@@ -35,7 +35,7 @@ describe('Result', () => {
 			saveGame: () => {}
 		};
 		const component = shallow(<Result />, mountOptions);
-		expect(component.find(Dialog).node.props.title).to.equal('You Lose!');
+		expect(component.find(WebDialog).node.props.title).to.equal('You Lose!');
 	});
 
 	it('tells the user the secret number', () => {
@@ -45,6 +45,6 @@ describe('Result', () => {
 			saveGame: () => {}
 		};
 		const component = shallow(<Result />, mountOptions);
-		expect(component.find('p').text()).to.equal('The secret number was 1.');
+		expect(component.find(WebDialog).dive().find('p').text()).to.equal('The secret number was 1.');
 	});
 });
