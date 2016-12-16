@@ -1,6 +1,5 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {
@@ -12,19 +11,14 @@ import {
 } from 'material-ui/styles/colors';
 
 import {Login} from '../../components/Login';
-
 import {
 	BUTTON_CLASSNAME,
-	DIALOG_CLASSNAME,
-	DIALOG_CONTENT_CLASSNAME,
-	DIALOG_TITLE_CLASSNAME,
-	DIALOG_BODY_CLASSNAME,
-	DIALOG_ACTIONS_CONTAINER_CLASSNAME,
 	LOGIN_DIALOG_TITLE,
 	LOGIN_DIALOG_LOGIN_BUTTON_LABEL,
 	LOGIN_DIALOG_TEXT_FIELD_HINT_TEXT,
 	LOGIN_DIALOG_TEXT_FIELD_ERROR_TEXT
 } from '../../core';
+import {WebDialog} from './Dialog';
 
 export class WebLogin extends Login {
     static contextTypes = Login.getContextTypes({
@@ -32,42 +26,47 @@ export class WebLogin extends Login {
     });
 
 	render() {
-		const actions = [
-			<RaisedButton
-				label={LOGIN_DIALOG_LOGIN_BUTTON_LABEL}
-				keyboardFocused={true}
-				onTouchTap={this.login}
-				onClick={this.login}
-				disabled={!this.state.user}
-				backgroundColor={green900}
-				className={BUTTON_CLASSNAME}
-				labelColor={grey300}
-			 />
-		];
 		return (
-			<Dialog
-				title={LOGIN_DIALOG_TITLE}
-				actions={actions}
+			<WebDialog
+				actions={this.renderActions()}
+				bodyContent={this.renderBodyContent()}
 				modal={false}
 				open={!this.context.login.user}
-				className={DIALOG_CLASSNAME}
-				contentClassName={DIALOG_CONTENT_CLASSNAME}
-				titleClassName={DIALOG_TITLE_CLASSNAME}
-				bodyClassName={DIALOG_BODY_CLASSNAME}
-				actionsContainerClassName={DIALOG_ACTIONS_CONTAINER_CLASSNAME}
-			>
-				<TextField 
-					name="user"
-					hintText={LOGIN_DIALOG_TEXT_FIELD_HINT_TEXT}
-					errorText={(!this.state.user) ? LOGIN_DIALOG_TEXT_FIELD_ERROR_TEXT : null} 
-					onKeyUp={this.onKeyUp.bind(this)}
-					inputStyle={{color: grey300}}
-					hintStyle={{color: grey500}}
-					errorStyle={{color: red900}}
-					underlineStyle={{borderColor: green900}}
-					underlineFocusStyle={{borderColor: green700}}
+				title={LOGIN_DIALOG_TITLE}
+			/>
+		);
+	}
+
+	renderActions() {
+		return (
+			[
+				<RaisedButton
+					label={LOGIN_DIALOG_LOGIN_BUTTON_LABEL}
+					keyboardFocused={true}
+					onTouchTap={this.login}
+					onClick={this.login}
+					disabled={!this.state.user}
+					backgroundColor={green900}
+					className={BUTTON_CLASSNAME}
+					labelColor={grey300}
 				 />
-			</Dialog>
+			]
+		);
+	}
+
+	renderBodyContent() {
+		return (
+			<TextField 
+				name="user"
+				hintText={LOGIN_DIALOG_TEXT_FIELD_HINT_TEXT}
+				errorText={(!this.state.user) ? LOGIN_DIALOG_TEXT_FIELD_ERROR_TEXT : null} 
+				onKeyUp={this.onKeyUp.bind(this)}
+				inputStyle={{color: grey300}}
+				hintStyle={{color: grey500}}
+				errorStyle={{color: red900}}
+				underlineStyle={{borderColor: green900}}
+				underlineFocusStyle={{borderColor: green700}}
+			 />
 		);
 	}
 
