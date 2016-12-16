@@ -9,8 +9,8 @@
     "ios-dev-bundle": "react-native bundle --entry-file index.ios.js --platform ios --bundle-output ios/index.ios.bundle",
     "web-bundle": "webpack --config web/webpack/webpack-production.config.js --progress --profile --colors",
     "web-dev": "node web/webpack/server.js",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
-    "web-test:watch": "npm run test -- --watch"
+    "test": "mocha --compilers jsx?:babel-core/register --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "David Smith",
   "license": "ISC",
